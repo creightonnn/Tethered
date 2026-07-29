@@ -30,6 +30,7 @@ export default function FindBus() {
 
   const position = demo.active ? demo.position : real.position
   const [trailLength, setTrailLength] = useState(() => getTrail().length)
+  const [simulateOffline, setSimulateOffline] = useState(false)
 
   useEffect(() => {
     if (!position) return
@@ -57,7 +58,7 @@ export default function FindBus() {
   return (
     <div className="screen screen--pad-top">
       <TopBar title="Find the bus" />
-      <OfflineBadge />
+      <OfflineBadge forceOffline={simulateOffline} />
 
       <MapView busPin={pin} position={position} />
 
@@ -130,6 +131,13 @@ export default function FindBus() {
                 Stop simulated walk
               </Button>
             )}
+            <Button
+              variant="secondary"
+              block
+              onClick={() => setSimulateOffline((v) => !v)}
+            >
+              {simulateOffline ? 'Restore signal' : 'Simulate losing signal'}
+            </Button>
             <Button
               variant="ghost"
               block

@@ -17,9 +17,9 @@ export function useOnlineStatus() {
   return online
 }
 
-export function OfflineBadge() {
+export function OfflineBadge({ forceOffline = false }: { forceOffline?: boolean }) {
   const online = useOnlineStatus()
-  if (online) return null
+  if (online && !forceOffline) return null
   return (
     <div
       role="status"
