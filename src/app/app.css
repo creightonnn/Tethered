@@ -44,6 +44,35 @@
   flex: 1;
 }
 
+/* -- role toggle -- */
+.role-toggle {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  margin: 0 auto 4px;
+  width: fit-content;
+}
+
+.role-toggle__btn {
+  min-height: var(--tap-min);
+  padding: 0 18px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.role-toggle__btn[data-active='true'] {
+  background: var(--accent);
+  color: var(--navy-950);
+}
+
 /* -- buttons -- */
 .btn {
   display: flex;

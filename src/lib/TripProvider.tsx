@@ -36,6 +36,7 @@ interface TripContextValue {
   role: Role
   join: (code: string, role: 'traveler' | 'guide') => boolean
   leave: () => void
+  switchRole: (role: 'traveler' | 'guide') => void
   setPin: (pin: Pin) => void
   setDeparture: (label: string, minutesFromNow: number) => void
   setMeetingPoint: (
@@ -74,6 +75,10 @@ export function TripProvider({ children }: { children: ReactNode }) {
   )
 
   const leave = useCallback(() => setRole(null), [])
+
+  const switchRole = useCallback((nextRole: 'traveler' | 'guide') => {
+    setRole(nextRole)
+  }, [])
 
   const setPin = useCallback(
     (pin: Pin) => setTrip((t) => ({ ...t, busPin: pin })),
@@ -156,6 +161,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
         role,
         join,
         leave,
+        switchRole,
         setPin,
         setDeparture,
         setMeetingPoint,

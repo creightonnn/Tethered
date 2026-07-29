@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { TripProvider, useTrip } from '../lib/TripProvider'
+import { RoleToggle } from './components/RoleToggle'
 import Join from './Join'
 import Home from './traveler/Home'
 import FindBus from './traveler/FindBus'
@@ -36,6 +37,7 @@ function RequireRole({
 export default function AppShell() {
   return (
     <TripProvider>
+      <RoleToggle />
       <Routes>
         <Route path="/" element={<Gate />} />
 
