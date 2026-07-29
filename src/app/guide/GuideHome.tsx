@@ -1,11 +1,13 @@
 import { useTrip } from '../../lib/TripProvider'
 import { LinkButton } from '../components/Button'
+import { StatTile } from '../components/StatTile'
 import { useCountdown } from '../components/Countdown'
 
 export default function GuideHome() {
-  const { trip, leave } = useTrip()
+  const { trip } = useTrip()
   const { display, overdue } = useCountdown(trip.departureAt)
-  const checkedIn = trip.roster.filter((m) => m.checkedIn).length
+  const checkedIn = trip.roster.filter((m) => m.checkedIn)
+  const missing = trip.roster.filter((m) => !m.checkedIn)
 
   return (
     <div className="screen screen--pad-top">
@@ -13,30 +15,36 @@ export default function GuideHome() {
         <h1 className="topbar__title">{trip.name}</h1>
       </div>
 
-      <div className="card">
-        <div className="info-row">
-          <span className="info-row__label">{trip.departureLabel}</span>
-          <span className="info-row__value">
-            {overdue ? 'departed' : display}
-          </span>
-        </div>
-        <div className="info-row">
-          <span className="info-row__label">Bus pin</span>
-          <span className="info-row__value">
-            {trip.busPin ? 'Set' : 'Not set'}
-          </span>
-        </div>
-        <div className="info-row">
-          <span className="info-row__label">Roll call</span>
-          <span className="info-row__value">
-            {trip.rollCallActive
-              ? `${checkedIn} of ${trip.roster.length} here`
-              : 'Not running'}
-          </span>
-        </div>
+      <div className="stat-grid">
+        <StatTile
+          label="Roll call"
+          value={
+            trip.rollCallActive
+              ? `${checkedIn.length} of ${trip.roster.length}`
+              : 'Not running'
+          }
+          tone={
+            trip.rollCallActive && checkedIn.length === trip.roster.length
+              ? 'good'
+              : trip.rollCallActive
+                ? 'warn'
+                : 'neutral'
+          }
+        />
+        <StatTile
+          label={trip.departureLabel}
+          value={overdue ? 'Departed' : display}
+        />
+        <StatTile label="Bus pin" value={trip.busPin ? 'Set' : 'Not set'} />
       </div>
 
-      <div className="stack" style={{ marginTop: 18 }}>
+      {trip.rollCallActive && missing.length > 0 && (
+        <div className="instruction-callout" style={{ marginBottom: 14 }}>
+          Still missing: {missing.map((m) => m.name).join(', ')}
+        </div>
+      )}
+
+      <div className="stack" style={{ marginTop: 4 }}>
         <LinkButton to="/app/guide/pin" block>
           Set the bus pin
         </LinkButton>
@@ -52,12 +60,6 @@ export default function GuideHome() {
         <LinkButton to="/app/guide/roll-call" variant="secondary" block>
           Run roll call
         </LinkButton>
-      </div>
-
-      <div className="demo-link">
-        <button type="button" onClick={leave}>
-          Switch role (demo)
-        </button>
       </div>
     </div>
   )

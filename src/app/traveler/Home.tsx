@@ -4,7 +4,7 @@ import { DepartureCountdown } from '../components/Countdown'
 import { LinkButton } from '../components/Button'
 
 export default function Home() {
-  const { trip, leave } = useTrip()
+  const { trip } = useTrip()
 
   return (
     <div className="screen screen--pad-top">
@@ -72,12 +72,6 @@ export default function Home() {
             Meeting point: {trip.meetingPoint.label}
           </LinkButton>
         )}
-      </div>
-
-      <div className="demo-link">
-        <button type="button" onClick={leave}>
-          Switch role (demo)
-        </button>
       </div>
     </div>
   )
