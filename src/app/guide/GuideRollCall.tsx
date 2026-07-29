@@ -1,11 +1,39 @@
+import { useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { useTrip } from '../../lib/TripProvider'
 import { TopBar } from '../components/TopBar'
 import { Button } from '../components/Button'
+import { prefersReducedMotion } from '../../lib/reducedMotion'
 
 export default function GuideRollCall() {
   const { trip, startRollCall, endRollCall, simulateCheckIns } = useTrip()
   const checkedIn = trip.roster.filter((m) => m.checkedIn)
   const missing = trip.roster.filter((m) => !m.checkedIn)
+
+  const tallyRef = useRef<HTMLParagraphElement>(null)
+  const displayedRef = useRef(checkedIn.length)
+
+  useGSAP(
+    () => {
+      if (!tallyRef.current) return
+      const counter = { val: displayedRef.current }
+      gsap.to(counter, {
+        val: checkedIn.length,
+        duration: prefersReducedMotion() ? 0 : 0.5,
+        ease: 'power1.out',
+        onUpdate: () => {
+          if (tallyRef.current) {
+            tallyRef.current.textContent = `${Math.round(counter.val)} of ${trip.roster.length} here`
+          }
+        },
+        onComplete: () => {
+          displayedRef.current = checkedIn.length
+        },
+      })
+    },
+    { dependencies: [checkedIn.length], scope: tallyRef },
+  )
 
   return (
     <div className="screen screen--pad-top">
@@ -24,7 +52,7 @@ export default function GuideRollCall() {
       ) : (
         <>
           <div className="rollcall-tally">
-            <p className="rollcall-tally__count">
+            <p className="rollcall-tally__count" ref={tallyRef}>
               {checkedIn.length} of {trip.roster.length} here
             </p>
           </div>

@@ -1,4 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { prefersReducedMotion } from '../../lib/reducedMotion'
 
 function useNow(intervalMs = 1000) {
   const [now, setNow] = useState(() => Date.now())
@@ -30,13 +33,28 @@ export function DepartureCountdown({
   targetIso: string
 }) {
   const { overdue, display } = useCountdown(targetIso)
+  const valueRef = useRef<HTMLParagraphElement>(null)
+
+  useGSAP(
+    () => {
+      if (!valueRef.current) return
+      gsap.fromTo(
+        valueRef.current,
+        { scale: 1.06 },
+        { scale: 1, duration: prefersReducedMotion() ? 0 : 0.35, ease: 'power2.out' },
+      )
+    },
+    { dependencies: [display], scope: valueRef },
+  )
 
   return (
     <div className="countdown">
       <p className="countdown__label">
         {overdue ? 'The group left' : label}
       </p>
-      <p className="countdown__value">{overdue ? 'already' : display}</p>
+      <p className="countdown__value" ref={valueRef}>
+        {overdue ? 'already' : display}
+      </p>
       {!overdue && (
         <p className="countdown__sub">You've got plenty of time.</p>
       )}
