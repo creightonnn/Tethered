@@ -17,6 +17,7 @@ import { TopBar } from '../components/TopBar'
 import { CompassArrow } from '../components/CompassArrow'
 import { Button } from '../components/Button'
 import { OfflineBadge } from '../components/OfflineBadge'
+import { MapView } from '../components/MapView'
 
 export default function FindBus() {
   const { trip } = useTrip()
@@ -57,6 +58,8 @@ export default function FindBus() {
     <div className="screen screen--pad-top">
       <TopBar title="Find the bus" />
       <OfflineBadge />
+
+      <MapView busPin={pin} position={position} />
 
       <div className="compass">
         {!position ? (
