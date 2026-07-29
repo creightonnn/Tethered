@@ -1,0 +1,72 @@
+/*
+  Direction: transit departure-board / wayfinding-signage world.
+  Marketing (Persuade) commits deep indigo-navy + warm amber, departure-board
+  scale. The app (Operate) inherits the same two colors but restrained: warm
+  paper ground, navy ink, amber only for the one primary action per screen.
+*/
+:root {
+  /* -- world colors -- */
+  --navy-950: #10142a;
+  --navy-900: #1c2340;
+  --navy-800: #262f52;
+  --navy-700: #3a4470;
+  --navy-500: #6670a0;
+  --navy-300: #a6adcc;
+
+  --amber-700: #a3641c;
+  --amber-600: #c9822a;
+  --amber-500: #e8a33d;
+  --amber-300: #f2c47e;
+  --amber-100: #fbe8c8;
+
+  --paper-100: #fbf7ef;
+  --paper-200: #f4ede1;
+  --paper-300: #e9dfcd;
+
+  --ink-900: #1c2340;
+  --ink-700: #3d4368;
+
+  --signal-good: #4c7f68;
+  --signal-good-bg: #e3efe8;
+  --signal-warn: #b5542f;
+  --signal-warn-bg: #f8e6dd;
+
+  /* -- type -- */
+  --font-display: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* -- shape -- */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+  --tap-min: 64px;
+
+  /* -- motion -- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: light;
+}
+
+/* Marketing surface: dark, cinematic, committed color field. */
+[data-theme='marketing'] {
+  --bg: var(--navy-900);
+  --bg-raised: var(--navy-800);
+  --text: var(--paper-100);
+  --text-muted: var(--navy-300);
+  --accent: var(--amber-500);
+  --accent-strong: var(--amber-300);
+  --line: rgba(244, 237, 225, 0.14);
+}
+
+/* App surface: restrained paper ground, high contrast, one accent. */
+[data-theme='app'] {
+  --bg: var(--paper-100);
+  --bg-raised: #ffffff;
+  --text: var(--ink-900);
+  --text-muted: var(--ink-700);
+  --accent: var(--amber-600);
+  --accent-strong: var(--amber-700);
+  --line: rgba(28, 35, 64, 0.12);
+  color-scheme: light;
+}

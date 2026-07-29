@@ -1,0 +1,141 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          },
+          {
+            "type": "http",
+            "url": "http://localhost:27247/api/hooks/permission",
+            "timeout": 1800
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:/Users/creig/AppData/Roaming/npm/node_modules/@synapse-ai/cli/dist/hooks/send_event.cjs\"",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,368 @@
+.screen {
+  min-height: 100svh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  padding: 20px 20px calc(28px + env(safe-area-inset-bottom));
+}
+
+.screen--pad-top {
+  padding-top: calc(20px + env(safe-area-inset-top));
+}
+
+/* -- top bar -- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--tap-min);
+  margin-bottom: 8px;
+}
+
+.topbar__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.topbar__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: var(--text);
+}
+
+.topbar__spacer {
+  flex: 1;
+}
+
+/* -- buttons -- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: var(--tap-min);
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.15s var(--ease-out), filter 0.15s var(--ease-out);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--navy-950);
+  box-shadow: 0 8px 20px -8px rgba(201, 130, 42, 0.6);
+}
+
+.btn--primary:hover {
+  filter: brightness(1.04);
+}
+
+.btn--secondary {
+  background: var(--bg-raised);
+  color: var(--text);
+  border: 1.5px solid var(--line);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 1rem;
+  min-height: 52px;
+}
+
+.btn--huge {
+  min-height: 96px;
+  font-size: 1.4rem;
+  border-radius: var(--radius-lg);
+  width: 100%;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* -- cards -- */
+.card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+}
+
+.card + .card {
+  margin-top: 14px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.demo-link {
+  margin-top: auto;
+  padding-top: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.demo-link a,
+.demo-link button {
+  color: var(--accent-strong);
+  background: none;
+  border: none;
+  font: inherit;
+  text-decoration: underline;
+}
+
+/* -- countdown -- */
+.countdown {
+  text-align: center;
+  padding: 30px 10px 26px;
+}
+
+.countdown__label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.countdown__value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 15vw, 4.2rem);
+  line-height: 1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.countdown__sub {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+/* -- announcement banner -- */
+.announcement {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--amber-100);
+  border: 1px solid var(--amber-300);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+.announcement__icon {
+  flex-shrink: 0;
+  color: var(--amber-700);
+  margin-top: 2px;
+}
+
+.announcement__body {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--ink-900);
+}
+
+.announcement__eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--amber-700);
+  margin-bottom: 4px;
+}
+
+/* -- find the bus -- */
+.compass {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 6px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.compass__arrow-wrap {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1.5px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  position: relative;
+}
+
+.compass__arrow {
+  transition: transform 0.25s var(--ease-out);
+  color: var(--accent);
+}
+
+.compass__distance {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(2rem, 11vw, 3rem);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.compass__instruction {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 24ch;
+}
+
+.compass__note {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* -- roll call -- */
+.rollcall-tap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rollcall-tap__btn {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: var(--navy-950);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 40px -12px rgba(201, 130, 42, 0.55);
+}
+
+.rollcall-tap__btn:active {
+  transform: scale(0.96);
+}
+
+.rollcall-tap__btn[data-done='true'] {
+  background: var(--signal-good);
+  color: white;
+  box-shadow: none;
+}
+
+.roster-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 4px;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.roster-row:last-child {
+  border-bottom: none;
+}
+
+.roster-row__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--signal-warn);
+  flex-shrink: 0;
+}
+
+.roster-row[data-checked='true'] .roster-row__dot {
+  background: var(--signal-good);
+}
+
+.rollcall-tally {
+  text-align: center;
+  padding: 18px 0;
+}
+
+.rollcall-tally__count {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 9vw, 2.6rem);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* -- day pack -- */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.05rem;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row__label {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.info-row__value {
+  text-align: right;
+  font-weight: 600;
+}
+
+.instruction-callout {
+  margin-top: 14px;
+  background: var(--amber-100);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 1rem;
+  color: var(--ink-900);
+  font-weight: 600;
+  line-height: 1.4;
+}
