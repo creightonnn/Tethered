@@ -1,6 +1,5 @@
 .screen {
-  min-height: 100svh;
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   background: var(--bg);
@@ -161,7 +160,7 @@
 
 .stat-tile__label {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-muted);
@@ -182,6 +181,10 @@
 
 .stat-tile[data-tone='warn'] .stat-tile__value {
   color: var(--signal-warn);
+}
+
+.stat-tile:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 .eyebrow {

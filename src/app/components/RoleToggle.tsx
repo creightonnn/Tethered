@@ -15,11 +15,10 @@ export function RoleToggle() {
   }
 
   return (
-    <div className="role-toggle" role="tablist" aria-label="Demo view">
+    <div className="role-toggle" role="group" aria-label="Demo view">
       <button
         type="button"
-        role="tab"
-        aria-selected={role === 'traveler'}
+        aria-pressed={role === 'traveler'}
         className="role-toggle__btn"
         data-active={role === 'traveler'}
         onClick={() => go('traveler')}
@@ -28,8 +27,7 @@ export function RoleToggle() {
       </button>
       <button
         type="button"
-        role="tab"
-        aria-selected={role === 'guide'}
+        aria-pressed={role === 'guide'}
         className="role-toggle__btn"
         data-active={role === 'guide'}
         onClick={() => go('guide')}

@@ -56,6 +56,7 @@ export function MapView({
       style: OPENFREEMAP_STYLE,
       center: [busPin.lng, busPin.lat],
       zoom: 15,
+      interactive: false,
     })
     mapRef.current = map
 
@@ -86,7 +87,8 @@ export function MapView({
       mapRef.current = null
       meMarkerRef.current = null
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Intentionally scoped to busPin so the map only re-inits when the bus
+    // location changes, not on every render.
   }, [busPin.lat, busPin.lng])
 
   useEffect(() => {

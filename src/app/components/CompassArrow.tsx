@@ -3,8 +3,6 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { prefersReducedMotion } from '../../lib/reducedMotion'
 
-gsap.registerPlugin(useGSAP)
-
 export function CompassArrow({
   bearing,
   heading,

@@ -4,7 +4,7 @@ import { StatTile } from '../components/StatTile'
 import { useCountdown } from '../components/Countdown'
 
 export default function GuideHome() {
-  const { trip } = useTrip()
+  const { trip, leave } = useTrip()
   const { display, overdue } = useCountdown(trip.departureAt)
   const checkedIn = trip.roster.filter((m) => m.checkedIn)
   const missing = trip.roster.filter((m) => !m.checkedIn)
@@ -60,6 +60,12 @@ export default function GuideHome() {
         <LinkButton to="/app/guide/roll-call" variant="secondary" block>
           Run roll call
         </LinkButton>
+      </div>
+
+      <div className="demo-link">
+        <button type="button" onClick={leave}>
+          Leave trip (demo)
+        </button>
       </div>
     </div>
   )
