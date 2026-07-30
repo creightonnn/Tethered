@@ -1,4 +1,7 @@
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { prefersReducedMotion } from '../../lib/reducedMotion'
 
 function PhoneFrame({
   label,
@@ -65,6 +68,31 @@ function MockHome() {
 }
 
 function MockFindBus() {
+  const compassRef = useRef<HTMLDivElement>(null)
+  const needleRef = useRef<SVGGElement>(null)
+
+  useGSAP(
+    () => {
+      if (!needleRef.current || prefersReducedMotion()) return
+      gsap.fromTo(
+        needleRef.current,
+        { rotate: -68, transformOrigin: '50% 50%' },
+        {
+          rotate: -32,
+          duration: 1.6,
+          ease: 'elastic.out(1, 0.55)',
+          delay: 0.3,
+          scrollTrigger: {
+            trigger: compassRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+        },
+      )
+    },
+    { scope: compassRef },
+  )
+
   return (
     <div
       style={{
@@ -75,33 +103,25 @@ function MockFindBus() {
         justifyContent: 'center',
       }}
     >
-      <div
-        style={{
-          width: 130,
-          height: 130,
-          borderRadius: '50%',
-          border: '1.5px solid var(--paper-300)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: 18,
-        }}
-      >
-        <svg width="52" height="52" viewBox="0 0 100 100" fill="none" style={{ transform: 'rotate(-35deg)' }}>
-          <path d="M50 8 L74 62 L50 48 L26 62 Z" fill="var(--amber-600)" />
+      <div className="showcase-compass" ref={compassRef}>
+        <svg width="100%" height="100%" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="86" fill="none" stroke="var(--paper-300)" strokeWidth="1" />
+          <circle cx="100" cy="100" r="60" fill="none" stroke="var(--paper-300)" strokeWidth="1" />
+          <g ref={needleRef} style={{ transformBox: 'fill-box' }}>
+            <path d="M100 26 L112 100 L100 92 L88 100 Z" fill="var(--amber-600)" />
+            <path d="M100 174 L92 100 L100 108 L108 100 Z" fill="var(--ink-700)" />
+          </g>
+          <circle cx="100" cy="100" r="4.5" fill="var(--paper-50)" />
         </svg>
+        <div className="showcase-compass__readout">
+          <span>BEARING 214°</span>
+          <span className="showcase-compass__readout-dot">·</span>
+          <span>0.4 MI</span>
+          <span className="showcase-compass__readout-dot">·</span>
+          <span className="showcase-compass__readout-flag">NO SIGNAL</span>
+        </div>
       </div>
-      <p
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontWeight: 700,
-          fontSize: '1.8rem',
-          color: 'var(--ink-900)',
-        }}
-      >
-        350 m
-      </p>
-      <p style={{ fontSize: '0.85rem', color: 'var(--ink-700)', textAlign: 'center', marginTop: 4 }}>
+      <p style={{ fontSize: '0.85rem', color: 'var(--ink-700)', textAlign: 'center', marginTop: 14 }}>
         About a 4-minute walk. Head this way.
       </p>
     </div>

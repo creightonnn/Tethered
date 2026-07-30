@@ -57,18 +57,6 @@ export default function Landing() {
                 overwrite: true,
               }),
           })
-
-          gsap.to('.mkt-hero__compass-inner', {
-            y: -70,
-            rotate: 6,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: '.mkt-hero',
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.6,
-            },
-          })
         },
       )
 

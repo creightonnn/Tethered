@@ -114,49 +114,6 @@
   height: 100%;
 }
 
-.mkt-hero__compass {
-  position: absolute;
-  right: 6%;
-  top: 50%;
-  width: min(38vw, 420px);
-  aspect-ratio: 1;
-  margin-top: calc(min(38vw, 420px) / -2);
-  opacity: 0.92;
-}
-
-.mkt-hero__compass-inner {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.mkt-hero__readout {
-  margin-top: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 0.03em;
-  color: var(--teal-300);
-  background: rgba(14, 23, 18, 0.55);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 8px 16px;
-  white-space: nowrap;
-}
-
-.mkt-hero__readout-dot {
-  color: var(--text-muted);
-}
-
-.mkt-hero__readout-flag {
-  color: var(--accent-strong);
-}
-
 .mkt-hero__scrim {
   position: absolute;
   inset: 0;
@@ -393,6 +350,40 @@
   max-width: 300px;
 }
 
+.showcase-compass {
+  width: 148px;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.showcase-compass__readout {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-700);
+  background: var(--paper-200);
+  border: 1px solid var(--paper-300);
+  border-radius: 999px;
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+.showcase-compass__readout-dot {
+  color: var(--ink-500);
+}
+
+.showcase-compass__readout-flag {
+  color: var(--amber-700);
+  font-weight: 600;
+}
+
 .phone {
   background: var(--paper-100);
   border-radius: 34px;
@@ -482,19 +473,10 @@
 @media (max-width: 900px) {
   .mkt .mkt-hero {
     min-height: auto;
-    padding: 120px 20px 340px;
+    padding: 120px 20px 80px;
   }
   .mkt-hero__content {
     max-width: none;
-  }
-  .mkt-hero__compass {
-    width: min(60vw, 260px);
-    right: 50%;
-    top: auto;
-    bottom: 8%;
-    margin-top: 0;
-    margin-right: calc(min(60vw, 260px) / -2);
-    opacity: 0.85;
   }
   .mkt-hero__scrim {
     background: linear-gradient(
