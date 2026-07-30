@@ -16,93 +16,68 @@ uniform float uTime;
 out vec4 fragColor;
 
 float hash(vec2 p) {
-  p = fract(p * vec2(123.34, 456.21));
-  p += dot(p, p + 45.32);
+  p = fract(p * vec2(12.9898, 78.233));
+  p += dot(p, p + 34.56);
   return fract(p.x * p.y);
 }
 
 float noise(vec2 p) {
   vec2 i = floor(p);
   vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
   float a = hash(i);
   float b = hash(i + vec2(1.0, 0.0));
   float c = hash(i + vec2(0.0, 1.0));
   float d = hash(i + vec2(1.0, 1.0));
-  vec2 u = f * f * (3.0 - 2.0 * f);
-  return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
 }
 
 float fbm(vec2 p) {
-  float value = 0.0;
-  float amplitude = 0.5;
+  float t = 0.0;
+  float a = 1.0;
+  mat2 m = mat2(1.0, -0.5, 0.2, 1.2);
   for (int i = 0; i < 5; i++) {
-    value += amplitude * noise(p);
-    p *= 2.0;
-    amplitude *= 0.5;
+    t += a * noise(p);
+    p *= 2.0 * m;
+    a *= 0.5;
   }
-  return value;
+  return t;
 }
 
-// Domain-warped cloud field (fbm-of-fbm-of-fbm), same structure as the
-// user's shadcn/Tailwind reference component's clouds() function.
-float clouds(vec2 p, float t) {
-  vec2 q = vec2(fbm(p + t * 0.05), fbm(p + vec2(5.2, 1.3) + t * 0.03));
-  vec2 r = vec2(
-    fbm(p + 4.0 * q + vec2(1.7, 9.2) + t * 0.02),
-    fbm(p + 4.0 * q + vec2(8.3, 2.8) - t * 0.015)
-  );
-  return fbm(p + 4.0 * r);
-}
-
-// One soft light streak with a distinct fan angle and a center offset spread
-// evenly across the frame, so 11 of these read as 11 separate streaks rather
-// than collapsing toward the same line.
-float streak(vec2 uv, float i, float t) {
-  float seed = i * 12.9898;
-  float baseAngle = 0.4 + (i / 11.0 - 0.5) * 0.9;
-  float angle = baseAngle + 0.06 * sin(t * 0.07 + seed);
-  vec2 dir = vec2(cos(angle), sin(angle));
-  vec2 perp = vec2(-dir.y, dir.x);
-  vec2 p = uv - vec2(0.5);
-  float along = dot(p, dir);
-  float across = dot(p, perp);
-
-  float jitter = (hash(vec2(seed, 3.1)) - 0.5) * 0.12;
-  float center = (i / 10.0 - 0.5) * 1.1 + jitter;
-  float drift = fract(seed * 0.61 + t * 0.05) - 0.5;
-  center += drift * 0.15;
-
-  float core = exp(-pow((across - center) * 5.5, 2.0) * 26.0);
-  float fade = smoothstep(0.9, 0.1, abs(along));
-  return core * fade;
+float clouds(vec2 p) {
+  float d = 1.0;
+  float t = 0.0;
+  for (float i = 0.0; i < 3.0; i++) {
+    float a = d * fbm(i * 10.0 + p.x * 0.2 + 0.2 * (1.0 + i) * p.y + d + i * i + p);
+    t = mix(t, d, a);
+    d = a;
+    p *= 2.0 / (i + 1.0);
+  }
+  return t;
 }
 
 void main() {
-  vec2 uv = gl_FragCoord.xy / uResolution.xy;
-  vec2 p = uv * vec2(uResolution.x / uResolution.y, 1.0) * 2.4;
+  float minDim = min(uResolution.x, uResolution.y);
+  vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / minDim;
+  vec2 st = uv * vec2(2.0, 1.0);
+  vec3 col = vec3(0.0);
 
-  float c = clouds(p, uTime);
-  // --ink-950 (#0e1712) -> --green-800 (#14432e), pine-green retint of the
-  // reference's orange/brown cloud mix.
-  vec3 bgLow = vec3(0.055, 0.090, 0.071);
-  vec3 bgHigh = vec3(0.078, 0.263, 0.180);
-  vec3 bg = mix(bgLow, bgHigh, c);
+  float bg = clouds(vec2(st.x + uTime * 0.5, -st.y));
+  uv *= 1.0 - 0.3 * (sin(uTime * 0.2) * 0.5 + 0.5);
 
-  // 11 streaks (not 12): leaves room for the plane to read as occupying
-  // the missing streak's position.
-  float streaks = 0.0;
-  for (int i = 0; i < 11; i++) {
-    streaks += streak(uv, float(i), uTime) * (0.55 + 0.45 * hash(vec2(float(i) * 7.31, 1.0)));
+  for (float i = 1.0; i < 12.0; i++) {
+    uv += 0.1 * cos(i * vec2(0.1 + 0.01 * i, 0.8) + i * i + uTime * 0.5 + 0.1 * uv.x);
+    vec2 p = uv;
+    float d = length(p);
+    // Cool blue-white light streaks — this is what structures the clouds.
+    col += 0.0011 / d * vec3(0.55, 0.75, 1.0);
+    float b = noise(i + p + bg * 1.731);
+    col += 0.0018 * b * vec3(0.62, 0.80, 1.0) / length(max(p, vec2(b * p.x * 0.02, p.y)));
+    // Deep midnight-blue tint — dark and moody, distinct from the app's green/amber brand.
+    col = mix(col, vec3(bg * 0.08, bg * 0.13, bg * 0.28), d);
   }
-  streaks = clamp(streaks, 0.0, 1.0);
 
-  // White-hot core, cool (teal) falloff — amber is deliberately not used
-  // here; it's reserved as a scarce UI accent per DESIGN.md.
-  vec3 streakCool = vec3(0.65, 0.89, 0.92);
-  vec3 streakColor = mix(streakCool, vec3(1.0), streaks);
-  vec3 color = bg + streakColor * streaks * 0.9;
-
-  fragColor = vec4(color, 1.0);
+  fragColor = vec4(col, 1.0);
 }
 `
 
