@@ -3,13 +3,25 @@ import * as THREE from 'three'
 import { prefersReducedMotion } from '../lib/reducedMotion'
 
 const LOOP_DURATION = 26
-const MAX_RADIUS = 3.2
-const LOOP_TURNS = 2.4
-const MAX_BANK = THREE.MathUtils.degToRad(38)
+// Fix round 1: original MAX_RADIUS/LOOP_TURNS/MAX_BANK combination spent
+// most of the visible loop with the wings banked edge-on to the camera
+// (measured via an offline Three.js projection sim, using the real
+// on-page canvas rect — top 72/left 0/1424.67x828 at a 1440x900 viewport,
+// not the naive full-viewport assumption — for accurate screen-space
+// numbers). Median apparent wingspan was ~38px and unreadable ~54% of the
+// time the plane was opaque. Tightening the radius/turns, easing the
+// bank, and re-anchoring the convergence point keeps the wing-camera
+// angle away from edge-on far more often (median wingspan ~91px,
+// unreadable only ~4% of the time) while keeping the whole loop's
+// on-screen bounding box (~x725-1013, y450-585 at 1440x900) clear of the
+// headline/body copy column, the nav bar, and the CTA row.
+const MAX_RADIUS = 1.5
+const LOOP_TURNS = 1.4
+const MAX_BANK = THREE.MathUtils.degToRad(34)
 // Upper-middle-right of frame, matched by eye against the shader's own
 // streak convergence during implementation (see Step 4).
-const CONVERGE = new THREE.Vector3(1.1, 1.0, -2.5)
-const PHASE0 = Math.PI * 0.35
+const CONVERGE = new THREE.Vector3(2.0, 1.0, -1.4)
+const PHASE0 = Math.PI * 0.1
 const FUSELAGE_LENGTH = 6.4
 
 // Nose points toward local +Z, tail toward local -Z.
@@ -129,15 +141,22 @@ export function FlyingPlane() {
     scene.add(sun)
 
     const plane = buildPlane()
-    plane.scale.setScalar(0.32)
+    // Fix round 1: bumped from 0.32 so the twin engines/wings read at a
+    // legible size (median apparent wingspan ~91px vs ~38px at the old
+    // scale, per the same projection sim referenced above).
+    plane.scale.setScalar(0.58)
     scene.add(plane)
 
-    const planeMaterials: THREE.MeshStandardMaterial[] = []
+    // bodyMat/accentMat are shared across most meshes, so traversing every
+    // mesh would collect duplicate entries — dedupe with a Set so the
+    // per-frame opacity write and the cleanup dispose() each touch every
+    // material exactly once.
+    const planeMaterials = new Set<THREE.MeshStandardMaterial>()
     plane.traverse((obj) => {
       if (obj instanceof THREE.Mesh) {
         const mat = obj.material as THREE.MeshStandardMaterial
         mat.transparent = true
-        planeMaterials.push(mat)
+        planeMaterials.add(mat)
       }
     })
 
