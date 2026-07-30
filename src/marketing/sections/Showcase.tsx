@@ -143,7 +143,7 @@ function MockRollCall() {
                 width: 9,
                 height: 9,
                 borderRadius: '50%',
-                background: i === 3 ? 'var(--signal-warn)' : 'var(--signal-good)',
+                background: i === 3 ? 'var(--warning)' : 'var(--success)',
               }}
             />
           </div>

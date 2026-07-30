@@ -37,10 +37,10 @@ export default function Landing() {
               { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.09 },
             )
             .fromTo(
-              '.board',
-              { autoAlpha: 0, y: 40, rotateX: 6 },
-              { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.9 },
-              0.15,
+              '.mkt-hero__scene',
+              { autoAlpha: 0 },
+              { autoAlpha: 1, duration: 1.1 },
+              0.1,
             )
 
           gsap.set('.reveal', { autoAlpha: 0, y: 34 })
@@ -58,8 +58,19 @@ export default function Landing() {
               }),
           })
 
-          gsap.to('.board', {
-            y: -22,
+          gsap.to('.mkt-hero__ridges', {
+            y: -30,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.mkt-hero',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: 0.6,
+            },
+          })
+          gsap.to('.mkt-hero__compass-inner', {
+            y: -70,
+            rotate: 6,
             ease: 'none',
             scrollTrigger: {
               trigger: '.mkt-hero',
