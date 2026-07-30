@@ -92,23 +92,12 @@
   pointer-events: none;
 }
 
-.mkt-hero__glow {
+.mkt-hero__shader-sky {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 70% 55% at 72% 18%,
-    rgba(232, 161, 58, 0.28),
-    transparent 62%
-  );
-}
-
-.mkt-hero__ridges {
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  height: 46%;
-  min-height: 260px;
+  height: 100%;
+  display: block;
 }
 
 .mkt-hero__compass {

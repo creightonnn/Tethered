@@ -58,16 +58,6 @@ export default function Landing() {
               }),
           })
 
-          gsap.to('.mkt-hero__ridges', {
-            y: -30,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: '.mkt-hero',
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.6,
-            },
-          })
           gsap.to('.mkt-hero__compass-inner', {
             y: -70,
             rotate: 6,

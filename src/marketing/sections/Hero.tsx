@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { prefersReducedMotion } from '../../lib/reducedMotion'
+import { ShaderSky } from '../ShaderSky'
 
 /*
   THESIS: "no one gets left behind" proven through the product's actual
@@ -19,12 +20,6 @@ import { prefersReducedMotion } from '../../lib/reducedMotion'
   FORM: brief-pinned redesign, direct build — extends the compass/
   breadcrumb cross-surface motif already committed in DESIGN.md.
 */
-
-const RIDGE_LAYERS = [
-  { d: 'M0,420 L0,300 Q120,240 260,270 T520,240 T780,280 T1040,230 T1300,270 L1440,250 L1440,420 Z', opacity: 0.5, translate: 8 },
-  { d: 'M0,420 L0,340 Q140,290 300,320 T600,290 T900,330 T1200,300 L1440,320 L1440,420 Z', opacity: 0.72, translate: 4 },
-  { d: 'M0,420 L0,375 Q180,340 360,365 T720,345 T1080,370 L1440,355 L1440,420 Z', opacity: 1, translate: 0 },
-]
 
 export function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null)
@@ -45,22 +40,7 @@ export function Hero() {
   return (
     <section className="mkt-hero">
       <div className="mkt-hero__scene" ref={sceneRef} aria-hidden="true">
-        <div className="mkt-hero__glow" />
-        <svg
-          className="mkt-hero__ridges"
-          viewBox="0 0 1440 420"
-          preserveAspectRatio="none"
-          role="presentation"
-        >
-          {RIDGE_LAYERS.map((layer, i) => (
-            <path
-              key={i}
-              d={layer.d}
-              fill={i === RIDGE_LAYERS.length - 1 ? 'var(--bg-sunken)' : 'var(--green-800)'}
-              opacity={layer.opacity}
-            />
-          ))}
-        </svg>
+        <ShaderSky />
 
         <div className="mkt-hero__compass">
           <div className="mkt-hero__compass-inner">
