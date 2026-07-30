@@ -63,7 +63,7 @@ export default function SetMeetingPoint() {
         />
 
         {error && (
-          <p style={{ color: 'var(--signal-warn)' }}>
+          <p style={{ color: 'var(--warning)' }}>
             Can't get your location: {error}
           </p>
         )}

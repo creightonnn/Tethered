@@ -39,7 +39,7 @@ export default function Join() {
               height: 64,
               margin: '0 auto 18px',
               borderRadius: 18,
-              background: 'var(--navy-900)',
+              background: 'var(--ink-900)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -106,7 +106,7 @@ export default function Join() {
             }}
           />
           {error && (
-            <p style={{ color: 'var(--signal-warn)', textAlign: 'center' }}>
+            <p style={{ color: 'var(--warning)', textAlign: 'center' }}>
               {error}
             </p>
           )}

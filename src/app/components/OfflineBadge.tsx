@@ -27,7 +27,7 @@ export function OfflineBadge({ forceOffline = false }: { forceOffline?: boolean 
         display: 'flex',
         alignItems: 'center',
         gap: 8,
-        background: 'var(--navy-900)',
+        background: 'var(--ink-900)',
         color: 'var(--paper-100)',
         borderRadius: 999,
         padding: '8px 14px',

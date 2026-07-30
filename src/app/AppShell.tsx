@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { TripProvider, useTrip } from '../lib/TripProvider'
 import { RoleToggle } from './components/RoleToggle'
@@ -14,6 +15,17 @@ import SetMeetingPoint from './guide/SetMeetingPoint'
 import Announce from './guide/Announce'
 import GuideRollCall from './guide/GuideRollCall'
 import './app.css'
+
+/** Guide gets the dark instrument-panel theme, traveler (and the pre-join
+ * screen) gets the calm paper theme — the two role personalities are opposite
+ * temperatures of the same brand, see DESIGN.md. */
+function ThemeSync() {
+  const { role } = useTrip()
+  useEffect(() => {
+    document.documentElement.dataset.theme = role === 'guide' ? 'guide' : 'traveler'
+  }, [role])
+  return null
+}
 
 function Gate() {
   const { role } = useTrip()
@@ -37,6 +49,7 @@ function RequireRole({
 export default function AppShell() {
   return (
     <TripProvider>
+      <ThemeSync />
       <RoleToggle />
       <Routes>
         <Route path="/" element={<Gate />} />

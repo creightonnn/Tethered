@@ -4,7 +4,7 @@ export default function ThemedRoute({
   theme,
   children,
 }: {
-  theme: 'marketing' | 'app'
+  theme: 'marketing' | 'guide' | 'traveler'
   children: ReactNode
 }) {
   useEffect(() => {
