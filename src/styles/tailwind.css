@@ -1,0 +1,25 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/*
+  Deliberately no `@import "tailwindcss/preflight.css" layer(base);` —
+  the `base` layer is declared above (for correct cascade-layer ordering)
+  but left empty. Preflight
+  resets default browser element styling globally, and every other surface
+  in this app (Guide, Traveler, the rest of marketing) was written against
+  the un-reset browser defaults. Skipping it keeps Tailwind opt-in: utility
+  classes are available anywhere, but nothing changes for elements that
+  don't use them.
+*/
+
+@theme inline {
+  /* Mapped onto the existing marketing-theme tokens in tokens.css instead
+     of inventing a second color palette — see [data-theme='marketing'] in
+     src/styles/tokens.css. */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-card: var(--bg-raised);
+  --color-muted-foreground: var(--text-muted);
+  --color-border: var(--line);
+}
