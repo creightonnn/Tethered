@@ -27,6 +27,34 @@
   letter-spacing: -0.01em;
 }
 
+/*
+  Hero escape hatch — `.mkt section` above (max-width/margin/padding) and the
+  h1 letter-spacing / p margin resets are unlayered author CSS, so they
+  always beat Tailwind's layered utility classes regardless of specificity
+  (see the layering note in src/styles/tailwind.css). The Tailwind-built
+  AnimatedMarqueeHero (src/components/ui/hero-3.tsx) needs to opt out of all
+  three so it can render full-bleed with its own spacing/typography.
+*/
+.mkt > .mkt-hero-marquee {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mkt-hero-marquee__title {
+  letter-spacing: -0.05em; /* matches Tailwind's tracking-tighter */
+}
+
+.mkt-hero-marquee__description {
+  margin-top: 1rem; /* matches Tailwind's mt-4, escapes global p{margin:0} */
+}
+
+@media (min-width: 768px) {
+  .mkt-hero-marquee__description {
+    margin-top: 1.5rem; /* matches Tailwind's mt-6 */
+  }
+}
+
 .mkt .eyebrow-mkt {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -379,22 +407,6 @@
 }
 
 @media (max-width: 900px) {
-  .mkt .mkt-hero {
-    min-height: auto;
-    padding: 120px 20px 80px;
-  }
-  .mkt-hero__content {
-    max-width: none;
-  }
-  .mkt-hero__scrim {
-    background: linear-gradient(
-      180deg,
-      var(--ink-950) 0%,
-      rgba(14, 23, 18, 0.9) 38%,
-      rgba(14, 23, 18, 0.55) 60%,
-      transparent 82%
-    );
-  }
   .magic-grid,
   .audience-grid {
     grid-template-columns: 1fr;

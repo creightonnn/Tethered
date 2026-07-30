@@ -11,6 +11,19 @@
   the un-reset browser defaults. Skipping it keeps Tailwind opt-in: utility
   classes are available anywhere, but nothing changes for elements that
   don't use them.
+
+  Layering also means: because `utilities` is declared as a named layer here
+  and all of global.css / marketing.css (and every other plain stylesheet in
+  this app) is unlayered, CSS cascade layer rules put unlayered author CSS
+  above every layer regardless of selector specificity. Any Tailwind utility
+  class will lose to an unlayered rule that targets the same element/property
+  — e.g. a plain `.mkt section { padding: ... }` or `h1,h2,h3,p { margin: 0 }`
+  rule silently wins over `p-8`/`mt-6`/etc. If you drop a new Tailwind/shadcn
+  component into src/marketing/ (or anywhere else with existing plain CSS),
+  check whether the existing unlayered CSS already claims the properties you
+  need and, if so, add a small scoped unlayered override (see
+  `.mkt-hero-marquee` and friends in src/marketing/marketing.css for the
+  pattern) or fall back to an inline `style` override on that element.
 */
 
 @theme inline {

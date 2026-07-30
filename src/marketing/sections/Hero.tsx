@@ -18,6 +18,7 @@ export function Hero() {
 
   return (
     <AnimatedMarqueeHero
+      className="mkt-hero-marquee"
       tagline="For guided group tours"
       title={
         <>

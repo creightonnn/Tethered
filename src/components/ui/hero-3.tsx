@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
@@ -24,7 +24,7 @@ const ActionButton = ({
     onClick={onClick}
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    className="mt-8 px-8 py-3 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] font-semibold shadow-lg transition-colors hover:bg-[var(--accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-opacity-75"
+    className="mt-6 md:mt-8 px-8 py-3 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] font-semibold shadow-lg transition-colors hover:bg-[var(--accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/75"
   >
     {children}
   </motion.button>
@@ -39,6 +39,8 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
   onCtaClick,
   className,
 }) => {
+  const prefersReducedMotion = useReducedMotion()
+
   const FADE_IN_ANIMATION_VARIANTS: Variants = {
     hidden: { opacity: 0, y: 10 },
     show: {
@@ -52,6 +54,12 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
     },
   }
 
+  // When the user prefers reduced motion, start every entrance animation in
+  // its final ("show") state instead of animating from "hidden" — this
+  // makes the initial/animate transition a no-op regardless of each
+  // element's own transition/delay overrides.
+  const initialAnimationState = prefersReducedMotion ? 'show' : 'hidden'
+
   const duplicatedImages = [...images, ...images]
 
   return (
@@ -63,16 +71,16 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
     >
       <div className="z-10 flex flex-1 flex-col items-center justify-center px-4 text-center">
         <motion.div
-          initial="hidden"
+          initial={initialAnimationState}
           animate="show"
           variants={FADE_IN_ANIMATION_VARIANTS}
-          className="mb-4 inline-block rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm"
+          className="mb-3 md:mb-4 inline-block rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm"
         >
           {tagline}
         </motion.div>
 
         <motion.h1
-          initial="hidden"
+          initial={initialAnimationState}
           animate="show"
           variants={{
             hidden: {},
@@ -82,7 +90,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
               },
             },
           }}
-          className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground"
+          className="mkt-hero-marquee__title text-4xl md:text-7xl font-bold text-foreground"
         >
           {typeof title === 'string'
             ? title.split(' ').map((word, i) => (
@@ -94,17 +102,17 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
         </motion.h1>
 
         <motion.p
-          initial="hidden"
+          initial={initialAnimationState}
           animate="show"
           variants={FADE_IN_ANIMATION_VARIANTS}
           transition={{ delay: 0.5 }}
-          className="mt-6 max-w-xl text-lg text-muted-foreground"
+          className="mkt-hero-marquee__description max-w-xl text-base md:text-lg text-muted-foreground"
         >
           {description}
         </motion.p>
 
         <motion.div
-          initial="hidden"
+          initial={initialAnimationState}
           animate="show"
           variants={FADE_IN_ANIMATION_VARIANTS}
           transition={{ delay: 0.6 }}
@@ -113,29 +121,36 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
         </motion.div>
       </div>
 
-      <div className="relative z-10 mt-10 w-full h-48 shrink-0 overflow-hidden md:h-64 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
+      <div
+        aria-hidden="true"
+        className="relative z-10 mt-6 md:mt-10 w-full h-40 shrink-0 overflow-hidden md:h-64 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]"
+      >
         <motion.div
-          className="flex gap-4"
-          animate={{
-            x: ['-100%', '0%'],
-            transition: {
-              ease: 'linear',
-              duration: 40,
-              repeat: Infinity,
-            },
-          }}
+          className="flex w-max gap-4"
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : {
+                  x: ['0%', '-50%'],
+                  transition: {
+                    ease: 'linear',
+                    duration: 40,
+                    repeat: Infinity,
+                  },
+                }
+          }
         >
           {duplicatedImages.map((src, index) => (
             <div
               key={index}
-              className="relative aspect-[3/4] h-48 md:h-64 flex-shrink-0"
+              className="relative aspect-[3/4] h-40 md:h-64 shrink-0"
               style={{
                 rotate: `${index % 2 === 0 ? -2 : 5}deg`,
               }}
             >
               <img
                 src={src}
-                alt={`Showcase image ${index + 1}`}
+                alt=""
                 className="w-full h-full object-cover rounded-2xl shadow-md"
               />
             </div>
