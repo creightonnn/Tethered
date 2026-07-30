@@ -18,6 +18,22 @@ const LOOP_DURATION = 26
 const MAX_RADIUS = 1.5
 const LOOP_TURNS = 1.4
 const MAX_BANK = THREE.MathUtils.degToRad(34)
+// Verification fix: the raw velocity-derived pitch swung to +-99deg (the
+// path's vertical component briefly outpaces the horizontal one), pointing
+// the nose almost straight up/down and reading as a missile/rocket rather
+// than a cruising jet. Clamping keeps the curve/converge path and bank
+// unchanged but stops the nose from tipping past a believable climb/dive.
+const MAX_PITCH = THREE.MathUtils.degToRad(24)
+// Verification fix: the camera's vertical FOV was fixed at 42deg, so on a
+// narrow/portrait container (mobile hero) the *horizontal* FOV — which is
+// derived from vertical FOV * aspect — shrank to ~18-23deg (vs ~67deg on
+// the 1424x828 desktop reference CONVERGE/MAX_RADIUS were tuned against).
+// That clipped almost the entire loop off the right edge of the frame on
+// mobile. BASE_ASPECT/BASE_VFOV_DEG describe that reference frame; resize()
+// widens the vertical FOV on narrower containers to hold the same
+// horizontal field of view instead, so the path stays in frame.
+const BASE_VFOV_DEG = 42
+const BASE_ASPECT = 1424.67 / 828
 // Upper-middle-right of frame, matched by eye against the shader's own
 // streak convergence during implementation (see Step 4).
 const CONVERGE = new THREE.Vector3(2.0, 1.0, -1.4)
@@ -131,7 +147,7 @@ export function FlyingPlane() {
     const scene = new THREE.Scene()
     scene.background = null
 
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100)
+    const camera = new THREE.PerspectiveCamera(BASE_VFOV_DEG, 1, 0.1, 100)
     camera.position.set(0, 1.6, 8)
     camera.lookAt(0.6, 1.1, -1)
 
@@ -164,7 +180,14 @@ export function FlyingPlane() {
       const width = container!.clientWidth
       const height = container!.clientHeight
       renderer.setSize(width, height, false)
-      camera.aspect = width / Math.max(height, 1)
+      const aspect = width / Math.max(height, 1)
+      camera.aspect = aspect
+      if (aspect < BASE_ASPECT) {
+        const baseHFov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(BASE_VFOV_DEG) / 2) * BASE_ASPECT)
+        camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(baseHFov / 2) / aspect))
+      } else {
+        camera.fov = BASE_VFOV_DEG
+      }
       camera.updateProjectionMatrix()
     }
     resize()
@@ -185,7 +208,8 @@ export function FlyingPlane() {
 
       const yaw = Math.atan2(velocity.x, velocity.z)
       const horizontalSpeed = Math.hypot(velocity.x, velocity.z)
-      const pitch = Math.atan2(-velocity.y, horizontalSpeed)
+      const rawPitch = Math.atan2(-velocity.y, horizontalSpeed)
+      const pitch = THREE.MathUtils.clamp(rawPitch, -MAX_PITCH, MAX_PITCH)
       const envelope = Math.sin(Math.PI * loopT)
       const bank = -MAX_BANK * envelope
 
