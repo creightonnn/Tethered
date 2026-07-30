@@ -4,8 +4,14 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// GitHub Pages project-site base path — this app is hosted at
+// github.com/creightonnn/Tethered, which Pages serves from
+// creightonnn.github.io/Tethered/, not the domain root.
+const BASE = '/Tethered/'
+
 // https://vite.dev/config/
 export default defineConfig({
+  base: BASE,
   plugins: [
     react(),
     tailwindcss(),
@@ -19,11 +25,11 @@ export default defineConfig({
         theme_color: '#1c2340',
         background_color: '#1c2340',
         display: 'standalone',
-        start_url: '/app',
-        scope: '/',
+        start_url: `${BASE}app`,
+        scope: BASE,
         icons: [
-          { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml' },
-          { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
+          { src: `${BASE}icon.svg`, sizes: 'any', type: 'image/svg+xml' },
+          { src: `${BASE}icon.svg`, sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
         ],
       },
       workbox: {
@@ -31,8 +37,8 @@ export default defineConfig({
         // no network — precache the full app shell so /app never needs a
         // live request once it has loaded once.
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/$/],
+        navigateFallback: `${BASE}index.html`,
+        navigateFallbackDenylist: [new RegExp(`^${BASE}$`)],
       },
       devOptions: {
         enabled: true,
