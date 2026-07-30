@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { prefersReducedMotion } from '../../lib/reducedMotion'
 import { ShaderSky } from '../ShaderSky'
+import { FlyingPlane } from '../FlyingPlane'
 
 /*
   THESIS: "no one gets left behind" proven through the product's actual
@@ -41,6 +42,7 @@ export function Hero() {
     <section className="mkt-hero">
       <div className="mkt-hero__scene" ref={sceneRef} aria-hidden="true">
         <ShaderSky />
+        <FlyingPlane />
 
         <div className="mkt-hero__compass">
           <div className="mkt-hero__compass-inner">
