@@ -1,59 +1,35 @@
-import { Link } from 'react-router-dom'
-import { ShaderSky } from '../ShaderSky'
-import { FlyingPlane } from '../FlyingPlane'
+import { useNavigate } from 'react-router-dom'
+import { AnimatedMarqueeHero } from '@/components/ui/hero-3'
 
-/*
-  THESIS: "no one gets left behind" proven through the product's actual
-  mechanism — a compass bearing to the bus — not a phone-mockup dashboard
-  preview; refuses the generic "app screenshot in a hero card" template.
-  OWN-WORLD: a WebGL streak-cloud sky over Tethered's pine-green palette,
-  a 3D Boeing 737 flying a path that echoes the shader's own light-streaks,
-  Domine headline carrying the product's own confirmed voice line. The
-  compass now lives in the Showcase "Find the bus" mockup, where it has
-  real product context.
-  STORY: a reader sees the world the product operates in before reading a
-  word of copy, then scrolls into the real Sapporo story below.
-  FIRST VIEWPORT: full-bleed scene fills the hero; headline/sub/CTAs sit
-  over it on the left, scrim-protected for contrast.
-  FORM: brief-pinned redesign, direct build — extends the compass/
-  breadcrumb cross-surface motif already committed in DESIGN.md.
-*/
+const TOUR_IMAGES = [
+  'https://images.unsplash.com/photo-1757983160551-5486507ee797?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1639438415473-a3c25d94cfe1?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1752563247435-8b1ee6107121?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1545972154-9bb223aac798?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1608221621423-8112b3fb7435?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1699341606473-3038483f93c1?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1736156725121-027231636f9d?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1756753103801-76980a5b5979?w=900&auto=format&fit=crop&q=60',
+  'https://images.unsplash.com/photo-1752807604225-ba452b60469f?w=900&auto=format&fit=crop&q=60',
+]
 
 export function Hero() {
+  const navigate = useNavigate()
+
   return (
-    <section className="mkt-hero">
-      <div className="mkt-hero__scene" aria-hidden="true">
-        <ShaderSky />
-        <FlyingPlane />
-      </div>
-
-      <div className="mkt-hero__scrim" aria-hidden="true" />
-
-      <div className="mkt-hero__content">
-        <p className="eyebrow-mkt reveal-hero">For guided group tours</p>
-        <h1 className="mkt-hero__headline reveal-hero">
+    <AnimatedMarqueeHero
+      tagline="For guided group tours"
+      title={
+        <>
           You're not lost.
           <br />
-          <em>The bus is this way.</em>
-        </h1>
-        <p className="mkt-hero__sub reveal-hero">
-          Save a pin while you've still got signal. Lose the signal, keep
-          the way back. Tethered kept an 18-person tour together across
-          Hokkaido — Sapporo malls, a Tokyo airport transfer — with no chat
-          thread and no wifi required.
-        </p>
-        <div className="mkt-hero__ctas reveal-hero">
-          <Link to="/app" className="mkt-btn mkt-btn--primary">
-            Try the live demo
-          </Link>
-          <a href="mailto:hello@tethered.app" className="mkt-btn mkt-btn--outline">
-            Bring it to your tours
-          </a>
-        </div>
-        <p className="mkt-hero__offline reveal-hero">
-          Built to keep working when the signal doesn't.
-        </p>
-      </div>
-    </section>
+          <em className="not-italic text-[var(--accent)]">The bus is this way.</em>
+        </>
+      }
+      description="Save a pin while you've still got signal. Lose the signal, keep the way back. Tethered kept an 18-person tour together across Hokkaido — Sapporo malls, a Tokyo airport transfer — with no chat thread and no wifi required. Built to keep working when the signal doesn't."
+      ctaText="Try the live demo"
+      onCtaClick={() => navigate('/app')}
+      images={TOUR_IMAGES}
+    />
   )
 }
