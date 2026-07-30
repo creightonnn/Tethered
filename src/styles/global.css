@@ -54,7 +54,7 @@ button {
 
 ::selection {
   background: var(--amber-500);
-  color: var(--navy-950);
+  color: var(--accent-ink);
 }
 
 .visually-hidden {

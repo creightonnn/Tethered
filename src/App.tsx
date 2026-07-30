@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './marketing/Landing'
 import AppShell from './app/AppShell'
 import ThemedRoute from './ThemedRoute'
+import BrandBoard from './dev/BrandBoard'
 
 function App() {
   return (
@@ -15,11 +16,12 @@ function App() {
             </ThemedRoute>
           }
         />
+        <Route path="/app/*" element={<AppShell />} />
         <Route
-          path="/app/*"
+          path="/brand-board"
           element={
-            <ThemedRoute theme="app">
-              <AppShell />
+            <ThemedRoute theme="marketing">
+              <BrandBoard />
             </ThemedRoute>
           }
         />

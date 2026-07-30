@@ -137,5 +137,8 @@
         ]
       }
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "21st-dev-magic"
+  ]
 }
