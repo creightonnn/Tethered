@@ -25,23 +25,9 @@ export default function Landing() {
         (context) => {
           const { reduce } = context.conditions as { reduce: boolean }
 
-          gsap.set('.reveal, .reveal-hero', { autoAlpha: 1, y: 0 })
+          gsap.set('.reveal', { autoAlpha: 1, y: 0 })
 
           if (reduce) return
-
-          const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-          heroTl
-            .fromTo(
-              '.reveal-hero',
-              { autoAlpha: 0, y: 26 },
-              { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.09 },
-            )
-            .fromTo(
-              '.mkt-hero__scene',
-              { autoAlpha: 0 },
-              { autoAlpha: 1, duration: 1.1 },
-              0.1,
-            )
 
           gsap.set('.reveal', { autoAlpha: 0, y: 34 })
           ScrollTrigger.batch('.reveal', {
