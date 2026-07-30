@@ -54,17 +54,26 @@ float clouds(vec2 p, float t) {
   return fbm(p + 4.0 * r);
 }
 
-// One soft anisotropic light streak, drifting slowly along its own axis.
-float streak(vec2 uv, float seed, float t) {
-  float angle = 0.4 + 0.15 * sin(t * 0.07 + seed * 12.9);
+// One soft light streak with a distinct fan angle and a center offset spread
+// evenly across the frame, so 11 of these read as 11 separate streaks rather
+// than collapsing toward the same line.
+float streak(vec2 uv, float i, float t) {
+  float seed = i * 12.9898;
+  float baseAngle = 0.4 + (i / 11.0 - 0.5) * 0.9;
+  float angle = baseAngle + 0.06 * sin(t * 0.07 + seed);
   vec2 dir = vec2(cos(angle), sin(angle));
   vec2 perp = vec2(-dir.y, dir.x);
   vec2 p = uv - vec2(0.5);
   float along = dot(p, dir);
   float across = dot(p, perp);
-  float driftPhase = fract(seed * 0.61 + t * 0.05 + along * 0.15) - 0.5;
-  float core = exp(-pow(across * 6.0 - driftPhase * 2.0, 2.0) * 40.0);
-  float fade = smoothstep(0.85, 0.1, abs(along));
+
+  float jitter = (hash(vec2(seed, 3.1)) - 0.5) * 0.12;
+  float center = (i / 10.0 - 0.5) * 1.1 + jitter;
+  float drift = fract(seed * 0.61 + t * 0.05) - 0.5;
+  center += drift * 0.15;
+
+  float core = exp(-pow((across - center) * 5.5, 2.0) * 26.0);
+  float fade = smoothstep(0.9, 0.1, abs(along));
   return core * fade;
 }
 
@@ -83,8 +92,7 @@ void main() {
   // the missing streak's position.
   float streaks = 0.0;
   for (int i = 0; i < 11; i++) {
-    float seed = float(i) * 7.31;
-    streaks += streak(uv, seed, uTime) * (0.55 + 0.45 * hash(vec2(seed, 1.0)));
+    streaks += streak(uv, float(i), uTime) * (0.55 + 0.45 * hash(vec2(float(i) * 7.31, 1.0)));
   }
   streaks = clamp(streaks, 0.0, 1.0);
 
