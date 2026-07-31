@@ -100,6 +100,25 @@ export default function GuideHome() {
             {trip.busPin ? 'Set' : 'Not set'}
           </p>
         </div>
+
+        <div className="gd-gauge">
+          <div
+            className="gd-gauge__pin-icon"
+            style={{ background: trip.meetingPoint ? 'var(--success-bg)' : 'var(--warning-bg)' }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d={ICONS.flag}
+                stroke={trip.meetingPoint ? 'var(--success)' : 'var(--warning)'}
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
+          <p className="gd-gauge__label">Meeting pt</p>
+          <p className="gd-gauge__value" style={{ fontSize: '1.05rem' }}>
+            {trip.meetingPoint ? 'Set' : 'Not set'}
+          </p>
+        </div>
       </div>
 
       {trip.rollCallActive && missing.length > 0 && (
