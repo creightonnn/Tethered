@@ -74,7 +74,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
           initial={initialAnimationState}
           animate="show"
           variants={FADE_IN_ANIMATION_VARIANTS}
-          className="mb-3 md:mb-4 inline-block rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm"
+          className="mb-3 md:mb-4 inline-block rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium font-[Bevan] text-muted-foreground backdrop-blur-sm"
         >
           {tagline}
         </motion.div>
