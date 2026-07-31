@@ -14,6 +14,12 @@ export function Problem() {
       const stage = stageRef.current
       if (!stage) return
 
+      // Coexistence note: Landing.tsx's shared `.reveal` ScrollTrigger.batch
+      // (overwrite: true) currently never fires for motion-safe users (a
+      // separate, pre-existing bug there), so it doesn't touch the
+      // `.story__beat` divs today. If that bug is ever fixed, its batch
+      // would start tweening these same elements and fight this timeline's
+      // scrub — check this file too when fixing that batch.
       const mm = gsap.matchMedia()
 
       mm.add(
@@ -33,8 +39,8 @@ export function Problem() {
 
           stage.classList.add('story--pinned')
 
-          gsap.set(beats, { opacity: 0.15, scale: 0.96 })
-          gsap.set(beats[0], { opacity: 1, scale: 1 })
+          gsap.set(beats, { opacity: 0.15, scale: 0.96, zIndex: 0 })
+          gsap.set(beats[0], { opacity: 1, scale: 1, zIndex: 1 })
           gsap.set(dots, { backgroundColor: 'var(--line)' })
           gsap.set(dots[0], { backgroundColor: 'var(--accent)' })
           gsap.set(marks, { color: 'var(--text-muted)' })
@@ -45,14 +51,17 @@ export function Problem() {
           // viewport top ('top top') tucks the stage's top edge under the
           // nav for the whole pinned range. Offset the start point by the
           // nav's rendered height so the pinned stage sits just below it.
+          // `start` is a function so it re-measures the nav's rendered
+          // height on every ScrollTrigger refresh, rather than baking in a
+          // value captured once at setup time (ScrollTrigger's `start`
+          // option supports a function returning a string, per its docs).
           const navBar = document.querySelector<HTMLElement>('.mkt-nav-bar')
-          const navOffset = navBar ? navBar.getBoundingClientRect().height : 0
 
           const OVERLAP = 0.3
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: stage,
-              start: `top top+=${navOffset}`,
+              start: () => `top top+=${navBar?.getBoundingClientRect().height ?? 0}`,
               end: '+=250%',
               pin: true,
               scrub: 1,
@@ -63,6 +72,13 @@ export function Problem() {
             if (i === 0) return
             const at = i - OVERLAP
             const dur = OVERLAP * 2
+            // zIndex is set instantly (duration 0) rather than tweened
+            // across `dur` so paint order snaps the incoming beat on top
+            // for the whole crossfade instead of the two beats swapping
+            // stacking order mid-fade (which would happen at whatever
+            // point their interpolated zIndex values cross).
+            tl.set(beat, { zIndex: 1 }, at)
+            tl.set(beats[i - 1], { zIndex: 0 }, at)
             tl.to(beats[i - 1], { opacity: 0.15, scale: 0.96, duration: dur }, at)
             tl.to(beat, { opacity: 1, scale: 1, duration: dur }, at)
             tl.to(marks[i - 1], { color: 'var(--text-muted)', duration: dur }, at)
@@ -99,7 +115,7 @@ export function Problem() {
       </div>
 
       <div className="story" ref={stageRef}>
-        <div className="story__progress">
+        <div className="story__progress" aria-hidden="true">
           <span className="story__progress-dot" />
           <span className="story__progress-dot" />
           <span className="story__progress-dot" />

@@ -189,16 +189,33 @@
 /* -- story: pinned scroll-scrubbed cross-fade (desktop, motion-safe only) -- */
 .story--pinned {
   position: relative;
-  height: 480px;
+  /* Fixed pixel height under-reserved pin/scrub slack as viewport height
+     grew (the quote below would start entering view before beat 4's
+     crossfade finished, see marketing.css history). Scaling with 100vh
+     (floored at the original 480px, capped at 900px so very tall
+     viewports don't stretch the stage absurdly) keeps proportionally more
+     headroom as the viewport gets taller. */
+  height: clamp(480px, calc(100vh - 180px), 900px);
+  /* Reserve a left gutter, inside the content box, for the progress-dot
+     rail below — see .story--pinned .story__progress. */
+  padding-left: 32px;
 }
 
 .story--pinned .story__beat,
 .story--pinned .story__beat:last-child {
   position: absolute;
-  inset: 0;
+  /* Not `inset: 0`: absolutely positioned children are offset from the
+     *padding* edge of their containing block, so `.story--pinned`'s own
+     padding-left has no effect on them. The left offset has to be set
+     explicitly here to actually reserve room for the dot rail (which
+     sits at left: 0) instead of overlapping the beat's mark column. */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 32px;
   border: none;
   padding: 0;
-  align-content: start;
+  align-content: center;
 }
 
 .story__progress {
@@ -208,7 +225,7 @@
 .story--pinned .story__progress {
   display: flex;
   position: absolute;
-  left: -32px;
+  left: 0;
   top: 0;
   bottom: 0;
   flex-direction: column;
