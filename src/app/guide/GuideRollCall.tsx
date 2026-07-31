@@ -7,7 +7,7 @@ import { Button } from '../components/Button'
 import { prefersReducedMotion } from '../../lib/reducedMotion'
 
 export default function GuideRollCall() {
-  const { trip, startRollCall, endRollCall, simulateCheckIns, checkIn } = useTrip()
+  const { trip, startRollCall, endRollCall, simulateCheckIns, toggleCheckIn } = useTrip()
   const checkedIn = trip.roster.filter((m) => m.checkedIn)
   const missing = trip.roster.filter((m) => !m.checkedIn)
 
@@ -57,17 +57,23 @@ export default function GuideRollCall() {
             </p>
           </div>
 
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: 10 }}>
+            Tap a name to check someone in yourself — tap again to undo.
+          </p>
           <div className="card" style={{ marginBottom: 14 }}>
-            {trip.roster.map((m) => (
+            {trip.roster.map((m, i) => (
               <button
                 type="button"
                 className="roster-row"
                 data-checked={m.checkedIn}
-                disabled={m.checkedIn}
-                onClick={() => checkIn(m.id)}
+                aria-label={m.checkedIn ? `Check out ${m.name}` : `Check in ${m.name}`}
+                onClick={() => toggleCheckIn(m.id)}
                 key={m.id}
               >
-                <span>{m.name}</span>
+                <span>
+                  {m.name}
+                  {i === 0 ? ' (you)' : ''}
+                </span>
                 <span className="roster-row__dot" aria-hidden />
               </button>
             ))}

@@ -121,6 +121,13 @@
   box-shadow: none;
 }
 
+.btn:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .btn--secondary {
   background: var(--bg-raised);
   color: var(--text);
@@ -430,12 +437,13 @@
   cursor: pointer;
 }
 
-.roster-row:disabled {
-  cursor: default;
+.roster-row:hover {
+  background: var(--bg-sunken);
 }
 
-.roster-row:not(:disabled):hover {
-  background: var(--bg-raised);
+.roster-row:active {
+  background: var(--bg-sunken);
+  transform: scale(0.99);
 }
 
 .roster-row:last-child {
@@ -736,10 +744,13 @@
   transform: scale(0.93);
 }
 
-@media (max-width: 380px) {
+@media (max-width: 480px) {
   .gd-cluster {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 380px) {
   .gd-console {
     grid-template-columns: repeat(3, 1fr);
   }

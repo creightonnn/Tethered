@@ -9,7 +9,8 @@ import { Button } from '../components/Button'
  * is actually left instead of always resetting to a hardcoded default. */
 function minutesRemaining(departureAt: string): number {
   const ms = new Date(departureAt).getTime() - Date.now()
-  return Math.max(1, Math.round(ms / 60_000))
+  const minutes = Math.round(ms / 60_000)
+  return Number.isFinite(minutes) ? Math.max(1, minutes) : 1
 }
 
 export default function SetDeparture() {

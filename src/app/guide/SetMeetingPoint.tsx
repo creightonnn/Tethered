@@ -10,7 +10,8 @@ import { Button } from '../components/Button'
  * to a hardcoded default when this screen is reopened. */
 function minutesRemaining(time: string): number {
   const ms = new Date(time).getTime() - Date.now()
-  return Math.max(1, Math.round(ms / 60_000))
+  const minutes = Math.round(ms / 60_000)
+  return Number.isFinite(minutes) ? Math.max(1, minutes) : 1
 }
 
 export default function SetMeetingPoint() {
@@ -21,6 +22,7 @@ export default function SetMeetingPoint() {
     trip.meetingPoint?.time ? minutesRemaining(trip.meetingPoint.time) : 20,
   )
   const navigate = useNavigate()
+  const canSave = Boolean(position) && label.trim().length > 0 && minutes >= 1
 
   return (
     <div className="screen screen--pad-top">
@@ -80,11 +82,11 @@ export default function SetMeetingPoint() {
 
         <Button
           block
-          disabled={!position || !label}
+          disabled={!canSave}
           onClick={() => {
-            if (!position) return
+            if (!canSave || !position) return
             setMeetingPoint({
-              label,
+              label: label.trim(),
               lat: position.lat,
               lng: position.lng,
               time: new Date(Date.now() + minutes * 60_000).toISOString(),

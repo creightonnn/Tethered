@@ -46,6 +46,7 @@ interface TripContextValue {
   startRollCall: () => void
   endRollCall: () => void
   checkIn: (id: string) => void
+  toggleCheckIn: (id: string) => void
   simulateCheckIns: () => void
   resetDemo: () => void
 }
@@ -136,6 +137,21 @@ export function TripProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  /** Guide-only manual override: unlike checkIn (one-way, used by a
+   * traveler's own "I'm here" tap), this toggles — so a guide who taps the
+   * wrong name in the roster can immediately correct the mistake without
+   * restarting the whole roll call. */
+  const toggleCheckIn = useCallback(
+    (id: string) =>
+      setTrip((t) => ({
+        ...t,
+        roster: t.roster.map((m) =>
+          m.id === id ? { ...m, checkedIn: !m.checkedIn } : m,
+        ),
+      })),
+    [],
+  )
+
   /** Demo helper: lets one browser show what a live roll-call looks like
    * without other travelers' devices. Deliberately excludes index 0 (the
    * current device's own identity — see RollCall.tsx's `trip.roster[0]`)
@@ -174,6 +190,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
         startRollCall,
         endRollCall,
         checkIn,
+        toggleCheckIn,
         simulateCheckIns,
         resetDemo,
       }}
