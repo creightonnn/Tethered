@@ -5,11 +5,21 @@ import { useGeolocation } from '../../lib/useGeolocation'
 import { TopBar } from '../components/TopBar'
 import { Button } from '../components/Button'
 
+/** Same reasoning as SetDeparture.tsx's minutesRemaining: show time
+ * actually left on the current meeting point instead of always resetting
+ * to a hardcoded default when this screen is reopened. */
+function minutesRemaining(time: string): number {
+  const ms = new Date(time).getTime() - Date.now()
+  return Math.max(1, Math.round(ms / 60_000))
+}
+
 export default function SetMeetingPoint() {
   const { trip, setMeetingPoint } = useTrip()
   const { position, error } = useGeolocation(true)
   const [label, setLabel] = useState(trip.meetingPoint?.label ?? '')
-  const [minutes, setMinutes] = useState(20)
+  const [minutes, setMinutes] = useState(
+    trip.meetingPoint?.time ? minutesRemaining(trip.meetingPoint.time) : 20,
+  )
   const navigate = useNavigate()
 
   return (
