@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './marketing/Landing'
+import Pricing from './marketing/Pricing'
 import AppShell from './app/AppShell'
 import ThemedRoute from './ThemedRoute'
 import BrandBoard from './dev/BrandBoard'
@@ -13,6 +14,14 @@ function App() {
           element={
             <ThemedRoute theme="marketing">
               <Landing />
+            </ThemedRoute>
+          }
+        />
+        <Route
+          path="/pricing"
+          element={
+            <ThemedRoute theme="marketing">
+              <Pricing />
             </ThemedRoute>
           }
         />

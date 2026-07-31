@@ -12,9 +12,14 @@ export function Nav() {
           </svg>
           Tethered
         </div>
-        <Link to="/app" className="mkt-nav__cta">
-          Try the demo
-        </Link>
+        <div className="mkt-nav__links">
+          <Link to="/pricing" className="mkt-nav__link">
+            Pricing
+          </Link>
+          <Link to="/app" className="mkt-nav__cta">
+            Try the demo
+          </Link>
+        </div>
       </div>
     </div>
   )

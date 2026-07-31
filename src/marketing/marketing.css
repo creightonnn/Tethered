@@ -103,6 +103,23 @@
   font-size: 1.15rem;
 }
 
+.mkt-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mkt-nav__link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.mkt-nav__link:hover {
+  color: var(--text);
+}
+
 .mkt-nav__cta {
   font-family: var(--font-display);
   font-weight: 600;
@@ -479,6 +496,10 @@
 }
 
 @media (max-width: 900px) {
+  .mkt-nav {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
   .magic-grid,
   .audience-grid {
     grid-template-columns: 1fr;
@@ -492,5 +513,142 @@
   }
   .mkt section {
     padding: 64px 20px;
+  }
+}
+
+/* -- pricing page -- */
+.pricing-hero {
+  padding: 140px 24px 60px;
+  max-width: 1180px;
+  margin: 0 auto;
+  text-align: center;
+  /* Same restrained top glow as the marketing hero, .gd, and .trv-home
+     (see the hero rule near the top of this file) — color-mix() against
+     this theme's own --accent/--primary rather than hardcoded colors. */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% -8%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%),
+    radial-gradient(ellipse 60% 40% at 82% 100%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 65%),
+    var(--bg);
+}
+
+.pricing-hero .mkt-section-head {
+  margin: 0 auto;
+}
+
+.pricing-hero__title {
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin-top: 10px;
+}
+
+.pricing-hero__sub {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 46ch;
+  margin: 18px auto 0;
+}
+
+.pricing-tiers {
+  padding: 40px 24px 80px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pricing-card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.pricing-card--featured {
+  border-color: var(--accent);
+}
+
+.pricing-card__price {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin: 14px 0 4px;
+}
+
+.pricing-card__period {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.pricing-card__note {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 22px;
+}
+
+.pricing-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.pricing-card__features li {
+  padding-left: 26px;
+  position: relative;
+}
+
+.pricing-card__features li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.pricing-card .mkt-btn {
+  margin-top: auto;
+  justify-content: center;
+}
+
+.pricing-faq {
+  padding: 20px 24px 60px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pricing-faq__list {
+  display: grid;
+  gap: 28px;
+}
+
+.pricing-faq__item h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.pricing-faq__item p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
   }
 }
