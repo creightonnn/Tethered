@@ -144,23 +144,6 @@
 }
 
 /* -- problem / story -- */
-.story {
-  display: grid;
-  gap: 20px;
-}
-
-.story__beat {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 22px;
-  padding: 26px 0;
-  border-top: 1px solid var(--line);
-}
-
-.story__beat:last-child {
-  border-bottom: 1px solid var(--line);
-}
-
 .story__mark {
   font-family: var(--font-mono);
   font-size: 0.95rem;
@@ -186,58 +169,76 @@
   max-width: 52ch;
 }
 
-/* -- story: pinned scroll-scrubbed cross-fade (desktop, motion-safe only) -- */
-.story--pinned {
-  position: relative;
-  /* Fixed pixel height under-reserved pin/scrub slack as viewport height
-     grew (the quote below would start entering view before beat 4's
-     crossfade finished, see marketing.css history). Scaling with 100vh
-     (floored at the original 480px, capped at 900px so very tall
-     viewports don't stretch the stage absurdly) keeps proportionally more
-     headroom as the viewport gets taller. */
-  height: clamp(480px, calc(100vh - 180px), 900px);
-  /* Reserve a left gutter, inside the content box, for the progress-dot
-     rail below — see .story--pinned .story__progress. */
-  padding-left: 32px;
+/* -- story: independent per-beat sticky-image sections --
+   Each StoryBeat instance is fully self-contained: `story-beat--motion`
+   (added by StoryBeat.tsx only on desktop + motion-safe) is the single
+   switch that turns on the two-column layout, the tall sticky-dwell
+   column, and the image's sticky positioning. When that class is absent
+   (mobile, at any width — the class is simply never added there — or
+   desktop with prefers-reduced-motion: reduce), every beat renders as a
+   plain single-column stack with no extra height and no sticky
+   positioning, with no separate media query needed to achieve that. */
+.story-beat {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 32px 0;
 }
 
-.story--pinned .story__beat,
-.story--pinned .story__beat:last-child {
-  position: absolute;
-  /* Not `inset: 0`: absolutely positioned children are offset from the
-     *padding* edge of their containing block, so `.story--pinned`'s own
-     padding-left has no effect on them. The left offset has to be set
-     explicitly here to actually reserve room for the dot rail (which
-     sits at left: 0) instead of overlapping the beat's mark column. */
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 32px;
-  border: none;
-  padding: 0;
-  align-content: center;
+.story-beat--motion {
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 48px;
+  padding: 48px 0;
 }
 
-.story__progress {
-  display: none;
+.story-beat--motion.story-beat--reverse {
+  grid-template-columns: 1.05fr 0.95fr;
 }
 
-.story--pinned .story__progress {
-  display: flex;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
+.story-beat--motion.story-beat--reverse .story-beat__image-col {
+  order: 2;
 }
 
-.story__progress-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--line);
+.story-beat--motion .story-beat__image-col {
+  /* Explicit height on the column itself (not relying on grid's implicit
+     row-stretch behavior) is what gives the sticky image room to dwell:
+     position: sticky needs its containing block to be taller than the
+     sticky element for the "stuck" effect to last more than an instant. */
+  min-height: 160vh;
+}
+
+.story-beat__image-frame {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.story-beat--motion .story-beat__image-frame {
+  position: sticky;
+  top: 96px;
+}
+
+.story-beat__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.story-beat--motion .story-beat__content {
+  align-self: center;
+}
+
+.story-beat__content .story__mark {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.story-beat__content .story__text {
+  max-width: 46ch;
 }
 
 /* -- magic section -- */
@@ -471,10 +472,6 @@
   }
   .showcase-row--reverse .showcase-phone {
     order: 0;
-  }
-  .story__beat {
-    grid-template-columns: 1fr;
-    gap: 8px;
   }
   .mkt section {
     padding: 64px 20px;
