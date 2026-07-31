@@ -65,7 +65,7 @@
 }
 
 .mkt .eyebrow-mkt {
-  font-family: var(--font-mono);
+  font-family: var(--font-badge);
   font-size: 0.85rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
