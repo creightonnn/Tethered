@@ -7,7 +7,7 @@ export default function Home() {
   const { trip, leave } = useTrip()
 
   return (
-    <div className="screen screen--pad-top">
+    <div className="screen screen--pad-top trv-home">
       <div className="topbar">
         <h1 className="topbar__title">{trip.name}</h1>
       </div>

@@ -491,6 +491,14 @@
 .gd {
   position: relative;
   overflow: hidden;
+  /* Same restrained top glow as the marketing hero (see marketing.css),
+     using this theme's own --accent/--primary via color-mix(). Sits
+     beneath .gd-contours (z-index: 0) since it's a background, not an
+     element — no z-index conflict. */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% -8%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%),
+    radial-gradient(ellipse 60% 40% at 82% 100%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 65%),
+    var(--bg);
 }
 
 .gd .gd-contours {
@@ -500,6 +508,19 @@
   opacity: 0.14;
   z-index: 0;
   animation: gd-drift 60s linear infinite;
+}
+
+.trv-home {
+  /* Same restrained top glow as the marketing hero and Guide dashboard
+     (see marketing.css and .gd above), using Traveler's own
+     --accent/--primary via color-mix(). Traveler has no absolutely-
+     positioned decoration layer like Guide's .gd-contours, so this
+     doesn't need position/overflow changes — it's a plain background
+     override on top of what .screen already sets. */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% -8%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%),
+    radial-gradient(ellipse 60% 40% at 82% 100%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 65%),
+    var(--bg);
 }
 
 @media (prefers-reduced-motion: reduce) {
