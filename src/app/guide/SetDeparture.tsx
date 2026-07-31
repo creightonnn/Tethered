@@ -4,11 +4,23 @@ import { useTrip } from '../../lib/TripProvider'
 import { TopBar } from '../components/TopBar'
 import { Button } from '../components/Button'
 
+/** Minutes remaining until the trip's current departureAt, floored at 1
+ * (the field's own minimum) so reopening this screen shows how much time
+ * is actually left instead of always resetting to a hardcoded default. */
+function minutesRemaining(departureAt: string): number {
+  const ms = new Date(departureAt).getTime() - Date.now()
+  return Math.max(1, Math.round(ms / 60_000))
+}
+
 export default function SetDeparture() {
   const { trip, setDeparture } = useTrip()
   const [label, setLabel] = useState(trip.departureLabel)
-  const [minutes, setMinutes] = useState(45)
+  const [minutes, setMinutes] = useState(
+    trip.departureAt ? minutesRemaining(trip.departureAt) : 45,
+  )
   const navigate = useNavigate()
+
+  const canSave = label.trim().length > 0 && minutes >= 1
 
   return (
     <div className="screen screen--pad-top">
@@ -56,8 +68,10 @@ export default function SetDeparture() {
 
         <Button
           block
+          disabled={!canSave}
           onClick={() => {
-            setDeparture(label, minutes)
+            if (!canSave) return
+            setDeparture(label.trim(), minutes)
             navigate('/app/guide')
           }}
         >
