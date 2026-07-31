@@ -418,9 +418,24 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 12px 4px;
   font-size: 1.05rem;
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
   border-bottom: 1px solid var(--line);
+  text-align: left;
+  cursor: pointer;
+}
+
+.roster-row:disabled {
+  cursor: default;
+}
+
+.roster-row:not(:disabled):hover {
+  background: var(--bg-raised);
 }
 
 .roster-row:last-child {
