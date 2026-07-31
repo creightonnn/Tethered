@@ -186,6 +186,43 @@
   max-width: 52ch;
 }
 
+/* -- story: pinned scroll-scrubbed cross-fade (desktop, motion-safe only) -- */
+.story--pinned {
+  position: relative;
+  height: 480px;
+}
+
+.story--pinned .story__beat,
+.story--pinned .story__beat:last-child {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  align-content: start;
+}
+
+.story__progress {
+  display: none;
+}
+
+.story--pinned .story__progress {
+  display: flex;
+  position: absolute;
+  left: -32px;
+  top: 0;
+  bottom: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.story__progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
 /* -- magic section -- */
 .magic-grid {
   display: grid;
