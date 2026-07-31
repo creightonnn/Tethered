@@ -88,10 +88,10 @@ function Ramp({ title, scale }: { title: string; scale: readonly (readonly [stri
 function TypeScale() {
   return (
     <div className="type-scale">
-      <p className="type-scale__sample" style={{ fontFamily: 'Domine', fontWeight: 600, fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}>
+      <p className="type-scale__sample" style={{ fontFamily: 'Fraunces', fontWeight: 600, fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}>
         You're not lost.
       </p>
-      <p className="type-scale__sample" style={{ fontFamily: 'Domine', fontWeight: 600, fontSize: 'clamp(1.9rem, 3.4vw, 2.75rem)' }}>
+      <p className="type-scale__sample" style={{ fontFamily: 'Fraunces', fontWeight: 600, fontSize: 'clamp(1.9rem, 3.4vw, 2.75rem)' }}>
         The bus is this way.
       </p>
       <p className="type-scale__badge" style={{ fontFamily: 'Bevan' }}>
@@ -142,7 +142,7 @@ function ThemePanel({ theme, label }: { theme: 'guide' | 'traveler'; label: stri
         <span className="theme-panel__eyebrow" style={{ fontFamily: 'Bevan' }}>
           {theme === 'guide' ? 'Instrument panel' : 'Field guide'}
         </span>
-        <h2 style={{ fontFamily: 'Domine' }}>{label}</h2>
+        <h2 style={{ fontFamily: 'Fraunces' }}>{label}</h2>
       </header>
       <TypeScale />
       <ButtonStates label={label} />
@@ -167,7 +167,7 @@ export default function BrandBoard() {
         <span className="brand-board__eyebrow" style={{ fontFamily: 'Bevan' }}>
           Tethered · Design system
         </span>
-        <h1 style={{ fontFamily: 'Domine' }}>Expedition Field Guide</h1>
+        <h1 style={{ fontFamily: 'Fraunces' }}>Expedition Field Guide</h1>
         <p>
           One brand, two temperatures: the guide's dark instrument panel and
           the traveler's calm paper field guide. Same palette, same type,
