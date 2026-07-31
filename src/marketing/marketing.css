@@ -92,6 +92,7 @@
   padding: 16px 24px;
   max-width: 1180px;
   margin: 0 auto;
+  column-gap: 16px;
 }
 
 .mkt-nav__brand {
@@ -516,18 +517,28 @@
   }
 }
 
-/* -- pricing page -- */
-.pricing-hero {
+/* -- pricing page --
+   These three section selectors are `.mkt <class>` (specificity 0,2,0),
+   not bare `.pricing-hero` etc. (0,1,0): `.mkt section` above is a class +
+   element selector at 0,1,1, which otherwise silently wins over a single
+   class selector regardless of source order and overrides padding/
+   max-width here. Same trap already documented and solved once for
+   `.mkt > .mkt-hero-marquee` above — see that comment for the full
+   explanation. */
+.mkt .pricing-hero {
   padding: 140px 24px 60px;
   max-width: 1180px;
   margin: 0 auto;
   text-align: center;
   /* Same restrained top glow as the marketing hero, .gd, and .trv-home
      (see the hero rule near the top of this file) — color-mix() against
-     this theme's own --accent/--primary rather than hardcoded colors. */
+     this theme's own --accent/--primary rather than hardcoded colors.
+     Bottom-right radial's extent/position tuned so it fades out well
+     before this section's bottom edge, avoiding a hard seam against
+     .pricing-tiers' flat background below. */
   background:
     radial-gradient(ellipse 70% 55% at 50% -8%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%),
-    radial-gradient(ellipse 60% 40% at 82% 100%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 65%),
+    radial-gradient(ellipse 55% 35% at 88% 120%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 60%),
     var(--bg);
 }
 
@@ -549,7 +560,7 @@
   margin: 18px auto 0;
 }
 
-.pricing-tiers {
+.mkt .pricing-tiers {
   padding: 40px 24px 80px;
   max-width: 1180px;
   margin: 0 auto;
@@ -569,7 +580,7 @@
   text-align: left;
 }
 
-.pricing-card--featured {
+.pricing-card.pricing-card--featured {
   border-color: var(--accent);
 }
 
@@ -590,6 +601,13 @@
   font-size: 0.9rem;
   color: var(--text-muted);
   margin-bottom: 22px;
+}
+
+/* Operator tier's second note ("What we'd build for you:") — a label
+   introducing the feature list below it, so it sits tighter to that list
+   than the default note spacing. */
+.pricing-card__note--label {
+  margin-bottom: 10px;
 }
 
 .pricing-card__features {
@@ -624,9 +642,19 @@
   justify-content: center;
 }
 
-.pricing-faq {
+.mkt .pricing-faq {
   padding: 20px 24px 60px;
   max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Trust line lives in its own section (matching Audience.tsx's identical
+   element) so it inherits side padding instead of rendering full-bleed —
+   see the `.mkt section` specificity note above for why this needs the
+   `.mkt` prefix too. */
+.mkt .pricing-trust {
+  padding: 0 24px 60px;
+  max-width: 1180px;
   margin: 0 auto;
 }
 

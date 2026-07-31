@@ -14,6 +14,16 @@ export default function Pricing() {
 
   useGSAP(
     () => {
+      // This `.reveal` + matchMedia batch is copied from Landing.tsx and
+      // shares its known limitation: gsap.matchMedia().add() only invokes
+      // its callback when at least one named condition matches, so for a
+      // motion-safe user (the common case) this callback never fires at
+      // all — `.reveal` content just renders at full opacity immediately
+      // instead of animating in. Harmless, but not actually animated.
+      // Pre-existing, sitewide, not introduced on this page — see the
+      // same note in StoryBeat.tsx for a different component. If
+      // Landing.tsx's copy of this ever gets fixed, this one needs the
+      // same fix.
       const mm = gsap.matchMedia()
 
       mm.add(
@@ -65,7 +75,7 @@ export default function Pricing() {
       <section className="pricing-tiers">
         <div className="pricing-grid">
           <div className="magic-card pricing-card pricing-card--featured reveal">
-            <p className="eyebrow-mkt">Pro</p>
+            <h2 className="eyebrow-mkt">Pro</h2>
             <p className="pricing-card__price">
               $39<span className="pricing-card__period">/mo per guide</span>
             </p>
@@ -79,17 +89,23 @@ export default function Pricing() {
               <li>Guide-to-group announcements</li>
             </ul>
             <Link to="/app" className="mkt-btn mkt-btn--primary">
-              Try it free
+              Try the live demo
             </Link>
           </div>
 
           <div className="magic-card pricing-card reveal">
-            <p className="eyebrow-mkt">Operator</p>
+            <h2 className="eyebrow-mkt">Operator</h2>
             <p className="pricing-card__price">Contact us</p>
-            <p className="pricing-card__note">For tour companies running more than one guide</p>
+            <p className="pricing-card__note">
+              For tour companies running more than one guide. Tell us how
+              your operation works and we'll scope it with you.
+            </p>
+            <p className="pricing-card__note pricing-card__note--label">
+              What we'd build for you:
+            </p>
             <ul className="pricing-card__features">
               <li>Everything in Pro</li>
-              <li>Multiple guides, one account</li>
+              <li>Coordinating guides across your team</li>
               <li>Multiple trips running at once</li>
               <li>Custom branding</li>
               <li>Priority support</li>
@@ -141,11 +157,13 @@ export default function Pricing() {
         </div>
       </section>
 
-      <p className="trust-line reveal">
-        Tested on a real 11-day Hokkaido tour. Eighteen travelers, two
-        guides, seven hotels, one Sapporo afternoon that made the case for
-        this.
-      </p>
+      <section className="pricing-trust">
+        <p className="trust-line reveal">
+          Tested on a real 11-day Hokkaido tour. Eighteen travelers, two
+          guides, seven hotels, one Sapporo afternoon that made the case for
+          this.
+        </p>
+      </section>
 
       <Footer />
     </div>
