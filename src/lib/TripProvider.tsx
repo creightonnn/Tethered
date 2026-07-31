@@ -136,13 +136,18 @@ export function TripProvider({ children }: { children: ReactNode }) {
     [],
   )
 
-  /** Demo helper: lets one browser show what a live roll-call looks like without other travelers' devices. */
+  /** Demo helper: lets one browser show what a live roll-call looks like
+   * without other travelers' devices. Deliberately excludes index 0 (the
+   * current device's own identity — see RollCall.tsx's `trip.roster[0]`)
+   * as well as the last 2 entries, so the presenter's own "I'm here"
+   * button still requires a real tap and the demo still has a visible
+   * "still missing" state to show off. */
   const simulateCheckIns = useCallback(
     () =>
       setTrip((t) => ({
         ...t,
         roster: t.roster.map((m, i) =>
-          i < t.roster.length - 2 ? { ...m, checkedIn: true } : m,
+          i > 0 && i < t.roster.length - 2 ? { ...m, checkedIn: true } : m,
         ),
       })),
     [],
