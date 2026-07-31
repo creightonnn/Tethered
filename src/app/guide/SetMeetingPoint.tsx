@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from '../../lib/TripProvider'
-import { useGeolocation } from '../../lib/useGeolocation'
 import { TopBar } from '../components/TopBar'
 import { Button } from '../components/Button'
+import { LocationPicker } from '../components/LocationPicker'
+import type { LatLng } from '../../lib/geo'
 
 /** Same reasoning as SetDeparture.tsx's minutesRemaining: show time
  * actually left on the current meeting point instead of always resetting
@@ -16,13 +17,15 @@ function minutesRemaining(time: string): number {
 
 export default function SetMeetingPoint() {
   const { trip, setMeetingPoint } = useTrip()
-  const { position, error } = useGeolocation(true)
   const [label, setLabel] = useState(trip.meetingPoint?.label ?? '')
   const [minutes, setMinutes] = useState(
     trip.meetingPoint?.time ? minutesRemaining(trip.meetingPoint.time) : 20,
   )
+  const [position, setPosition] = useState<LatLng>(
+    trip.meetingPoint ?? { lat: trip.hotel.lat, lng: trip.hotel.lng },
+  )
   const navigate = useNavigate()
-  const canSave = Boolean(position) && label.trim().length > 0 && minutes >= 1
+  const canSave = label.trim().length > 0 && minutes >= 1
 
   return (
     <div className="screen screen--pad-top">
@@ -33,7 +36,12 @@ export default function SetMeetingPoint() {
         entrance, anywhere the group scatters from.
       </p>
 
-      <div className="stack">
+      <p style={{ color: 'var(--text-muted)', marginBottom: 10, fontSize: '0.95rem' }}>
+        Tap the map or drag the pin to place it exactly.
+      </p>
+      <LocationPicker value={position} onChange={setPosition} />
+
+      <div className="stack" style={{ marginTop: 18 }}>
         <label className="eyebrow" htmlFor="label">
           Where
         </label>
@@ -74,17 +82,11 @@ export default function SetMeetingPoint() {
           }}
         />
 
-        {error && (
-          <p style={{ color: 'var(--warning)' }}>
-            Can't get your location: {error}
-          </p>
-        )}
-
         <Button
           block
           disabled={!canSave}
           onClick={() => {
-            if (!canSave || !position) return
+            if (!canSave) return
             setMeetingPoint({
               label: label.trim(),
               lat: position.lat,

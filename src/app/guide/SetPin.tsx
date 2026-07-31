@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { useTrip } from '../../lib/TripProvider'
-import { useGeolocation } from '../../lib/useGeolocation'
 import { TopBar } from '../components/TopBar'
 import { Button } from '../components/Button'
+import { LocationPicker } from '../components/LocationPicker'
 import { useNavigate } from 'react-router-dom'
+import type { LatLng } from '../../lib/geo'
 
 export default function SetPin() {
   const { trip, setPin } = useTrip()
-  const { position, error } = useGeolocation(true)
   const [note, setNote] = useState(trip.busPin?.note ?? '')
+  const [position, setPosition] = useState<LatLng>(
+    trip.busPin ?? { lat: trip.hotel.lat, lng: trip.hotel.lng },
+  )
   const navigate = useNavigate()
 
   return (
@@ -20,7 +23,7 @@ export default function SetPin() {
         able to find their way back to it even after they lose one.
       </p>
 
-      <div className="card">
+      <div className="card" style={{ marginBottom: 18 }}>
         <p className="eyebrow">Current bus pin</p>
         {trip.busPin ? (
           <p style={{ fontSize: '1.05rem' }}>{trip.busPin.note}</p>
@@ -28,6 +31,11 @@ export default function SetPin() {
           <p style={{ color: 'var(--text-muted)' }}>No pin set yet.</p>
         )}
       </div>
+
+      <p style={{ color: 'var(--text-muted)', marginBottom: 10, fontSize: '0.95rem' }}>
+        Tap the map or drag the pin to place it exactly.
+      </p>
+      <LocationPicker value={position} onChange={setPosition} />
 
       <div className="stack" style={{ marginTop: 18 }}>
         <label className="eyebrow" htmlFor="note">
@@ -50,22 +58,14 @@ export default function SetPin() {
           }}
         />
 
-        {error && (
-          <p style={{ color: 'var(--warning)' }}>
-            Can't get your location: {error}
-          </p>
-        )}
-
         <Button
           block
-          disabled={!position}
           onClick={() => {
-            if (!position) return
             setPin({ lat: position.lat, lng: position.lng, note })
             navigate('/app/guide')
           }}
         >
-          {position ? 'Drop pin at my location' : 'Finding your location…'}
+          Save bus pin
         </Button>
       </div>
     </div>

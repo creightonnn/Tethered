@@ -381,6 +381,69 @@
   background: var(--wayfind);
 }
 
+.map-marker--flag {
+  background: var(--success);
+}
+
+.map-marker--pick {
+  background: var(--accent);
+  cursor: grab;
+}
+
+.map-marker--pick:active {
+  cursor: grabbing;
+}
+
+.map-view--pick {
+  cursor: crosshair;
+}
+
+/* -- guide home: map + disclosure previews -- */
+.gd-map-section {
+  margin-bottom: 14px;
+}
+
+.gd-map-section .map-view {
+  margin-bottom: 0;
+}
+
+.gd-disclosure {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.gd-disclosure summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  min-height: var(--tap-min);
+  cursor: pointer;
+  list-style: none;
+}
+
+.gd-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.gd-disclosure__chevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.gd-disclosure[open] .gd-disclosure__chevron {
+  transform: rotate(180deg);
+}
+
+.gd-disclosure__body {
+  padding: 0 18px 16px;
+}
+
 /* -- roll call -- */
 .rollcall-tap {
   flex: 1;

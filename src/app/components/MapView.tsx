@@ -1,18 +1,9 @@
 import { useEffect, useRef } from 'react'
 import * as maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 import type { Feature, LineString } from 'geojson'
 import type { LatLng } from '../../lib/geo'
-
-// Vite doesn't resolve maplibre-gl's worker entry on its own (dev server
-// 404s on it) — point the library at the bundled worker URL explicitly.
-// See https://maplibre.org/maplibre-gl-js/docs/guides/vite/
-maplibregl.setWorkerUrl(maplibreWorkerUrl)
-
-// Free, keyless vector tiles — no API key needed, matches the app's
-// muted paper/navy palette better than a saturated default style.
-const OPENFREEMAP_STYLE = 'https://tiles.openfreemap.org/styles/positron'
+import { MAP_STYLE } from './mapSetup'
 
 const EMPTY_LINE: Feature<LineString> = {
   type: 'Feature',
@@ -36,10 +27,12 @@ function lineTo(a: LatLng, b: LatLng): Feature<LineString> {
 
 export function MapView({
   busPin,
+  meetingPoint,
   position,
   height = 240,
 }: {
   busPin: LatLng
+  meetingPoint?: LatLng | null
   position: LatLng | null
   height?: number
 }) {
@@ -53,7 +46,7 @@ export function MapView({
 
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: OPENFREEMAP_STYLE,
+      style: MAP_STYLE,
       center: [busPin.lng, busPin.lat],
       zoom: 15,
       interactive: false,
@@ -65,6 +58,14 @@ export function MapView({
     new maplibregl.Marker({ element: busEl })
       .setLngLat([busPin.lng, busPin.lat])
       .addTo(map)
+
+    if (meetingPoint) {
+      const flagEl = document.createElement('div')
+      flagEl.className = 'map-marker map-marker--flag'
+      new maplibregl.Marker({ element: flagEl })
+        .setLngLat([meetingPoint.lng, meetingPoint.lat])
+        .addTo(map)
+    }
 
     map.on('load', () => {
       map.addSource('route-line', { type: 'geojson', data: EMPTY_LINE })
@@ -87,9 +88,11 @@ export function MapView({
       mapRef.current = null
       meMarkerRef.current = null
     }
-    // Intentionally scoped to busPin so the map only re-inits when the bus
-    // location changes, not on every render.
-  }, [busPin.lat, busPin.lng])
+    // Intentionally scoped to busPin/meetingPoint's lat/lng (not the
+    // meetingPoint object itself) so the map only re-inits when a location
+    // actually changes, not on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [busPin.lat, busPin.lng, meetingPoint?.lat, meetingPoint?.lng])
 
   useEffect(() => {
     const map = mapRef.current
