@@ -105,6 +105,7 @@
   --danger: var(--brick-500);
   --danger-bg: rgba(194, 74, 59, 0.16);
   --line: rgba(246, 241, 231, 0.14);
+  --grain-opacity: 0.05;
   color-scheme: dark;
 }
 
@@ -129,6 +130,7 @@
   --danger: var(--brick-500);
   --danger-bg: rgba(194, 74, 59, 0.16);
   --line: rgba(246, 241, 231, 0.12);
+  --grain-opacity: 0.05;
   color-scheme: dark;
 }
 
@@ -153,5 +155,9 @@
   --danger: var(--brick-700);
   --danger-bg: #fae1dc;
   --line: rgba(22, 33, 28, 0.14);
+  /* Lower than the dark themes: the same turbulence texture reads as
+     visible grey speckling on light paper rather than film grain, so it
+     needs less opacity to stay equally subtle. */
+  --grain-opacity: 0.025;
   color-scheme: light;
 }
