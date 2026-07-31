@@ -218,6 +218,11 @@
 
 .story-beat--motion .story-beat__image-frame {
   position: sticky;
+  /* 96px = nav height (~72px, constant across desktop widths) + ~24px
+     breathing room, hardcoded rather than measured (intentionally
+     simplified from the previous design). If the nav's rendered height
+     ever changes (e.g. a second row, or a mobile-menu toggle appearing
+     at desktop width), this value needs to be revisited. */
   top: 96px;
 }
 

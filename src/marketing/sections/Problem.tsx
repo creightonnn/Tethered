@@ -20,7 +20,7 @@ export function Problem() {
         mark="Sapporo, free-wander"
         text="The moment anyone stepped off the bus and into a mall or a restaurant, their phone lost signal. Every tool built to help, the group chat, the live location sharing, went dark right when it was needed most."
         imageUrl="https://images.unsplash.com/photo-1736519464863-cf84f243dd08?w=1200&auto=format&fit=crop&q=60"
-        imageAlt="Snowy city street in Hokkaido, Japan"
+        imageAlt="Snowy city street in Sapporo, Japan"
         align="right"
       />
 

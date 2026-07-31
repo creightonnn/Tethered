@@ -15,7 +15,7 @@ interface StoryBeatProps {
 
 export function StoryBeat({ mark, text, imageUrl, imageAlt, align }: StoryBeatProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
+  const imageRef = useRef<HTMLImageElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useGSAP(
@@ -56,13 +56,19 @@ export function StoryBeat({ mark, text, imageUrl, imageAlt, align }: StoryBeatPr
             },
           })
 
-          // Continuous scale tied to how far the wrapper has traveled
-          // through the viewport. 'top bottom' -> 'bottom top' are
-          // ScrollTrigger's built-in relative keywords (the wrapper's top
-          // hitting the viewport's bottom, through the wrapper's bottom
-          // hitting the viewport's top) — no fixed px or vh value is
-          // needed here, so this can't fall out of sync with viewport
-          // height the way the previous design's fixed stage height did.
+          // Continuous scale tied to the photo's actual sticky "dwell"
+          // window, not the wrapper's full transit through the viewport.
+          // 'top top' -> 'bottom bottom' are ScrollTrigger's built-in
+          // relative keywords (the wrapper's top hitting the viewport's
+          // top, through the wrapper's bottom hitting the viewport's
+          // bottom) — this matches the span during which the image is
+          // actually pinned/visible via `position: sticky`, so the full
+          // 1.0 -> 1.08 scale plays out across the time the viewer can
+          // see it stuck, instead of mostly happening off-screen before
+          // it sticks or after it releases. Still no fixed px or vh
+          // value is needed here, so this can't fall out of sync with
+          // viewport height the way the previous design's fixed stage
+          // height did.
           gsap.fromTo(
             image,
             { scale: 1 },
@@ -71,8 +77,8 @@ export function StoryBeat({ mark, text, imageUrl, imageAlt, align }: StoryBeatPr
               ease: 'none',
               scrollTrigger: {
                 trigger: wrapper,
-                start: 'top bottom',
-                end: 'bottom top',
+                start: 'top top',
+                end: 'bottom bottom',
                 scrub: true,
               },
             },
@@ -95,8 +101,15 @@ export function StoryBeat({ mark, text, imageUrl, imageAlt, align }: StoryBeatPr
       ref={wrapperRef}
     >
       <div className="story-beat__image-col">
-        <div className="story-beat__image-frame" ref={imageRef}>
-          <img src={imageUrl} alt={imageAlt} className="story-beat__image" />
+        <div className="story-beat__image-frame">
+          <img
+            src={imageUrl}
+            alt={imageAlt}
+            className="story-beat__image"
+            ref={imageRef}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </div>
       <div className="story-beat__content" ref={contentRef}>
